@@ -1,0 +1,33 @@
+## ADR #3
+
+1. What did you decide?
+
+Which framework to use to implement the X-platform app.
+
+2. What was the context for your decision?
+
+Developing the application with a feature rich and reliable framework will
+reduce costs and deliver a better product.
+
+Programmers need to be able to work with the framework thus either they are
+already comfortable with it or they will need to learn how to use it.
+
+This decision has an impact on the code design.
+
+
+3. What is the problem you are trying to solve?
+
+How can we make our app as easy to implement as possible?
+
+4.  Which alternative options did you consider?
+
+* React native
+* Flutter
+
+5. Which one did you choose?
+
+Not enough information to pick one yet. Further options need to be explored.
+
+6. What is the main reason for that?
+
+//

@@ -1,0 +1,49 @@
+## ADR #2
+
+1. What did you decide?
+
+Which mobile OS should the application run on?
+
+2. What was the context for your decision?
+
+We want our application to be accessible to the largest possible amount of users.
+We need to consider that developing an app on multiple OS has a considerable impact
+on developing costs.
+Different technologies are available on different OS so this choice will impact
+our code.
+
+
+3. What is the problem you are trying to solve?
+
+How can we make the application available to a large portion of our potential
+users without a heavy impact on its usability and development costs?
+
+
+4.  Which alternative options did you consider?
+
+* Android
+* IoS
+* X-platform
+* (Android & IoS) native
+
+5. Which one did you choose?
+
+X-platform
+
+6. What is the main reason for that?
+
+Excluding on of the OS would cut out a significant portion of our users as currently
+the split between Android/Apple devices is roughly 7:3.
+A x-platform solution allows to access both markets while at the same time
+not bloating maintenance and development costs.
+The tradeoff is in usability.
+
+PROS:
+
+* access to nearly all potential users
+* less expensive compared to a native solution
+
+CONS:
+
+* more expensive compared to a single OS solution
+* no access to native OS specific features

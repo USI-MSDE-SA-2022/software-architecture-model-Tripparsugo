@@ -1,0 +1,492 @@
+<html>
+
+<head>
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Fira+Sans|Fira+Mono">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.0/build/styles/default.min.css">
+    <style>
+        body,
+        * {
+            font-family: "Fira Sans";
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 1em;
+        }
+
+        #usi-logo {
+            width: 75px;
+            height: 75px;
+        }
+
+        header {
+            display: flex;
+            align-content: space-between;
+            width: 100%;
+            justify-items: center;
+        }
+
+        header ul {
+            list-style: none;
+        }
+
+        header .title {
+            flex: 1;
+            margin-left: 1em;
+        }
+
+        html {
+            min-height: 100vh;
+        }
+
+        pre,
+        code {
+            font-family: "Fira Mono"
+        }
+
+        pre {
+            background: rgb(202, 227, 255);
+            padding: 1em;
+        }
+
+        td {
+            text-align: center
+        }
+
+        td:last-child {
+            text-align: left;
+        }
+
+        th {
+            font-weight: normal;
+            color: rgb(0, 61, 131);
+        }
+
+        thead {
+            border-bottom: 2px solid rgb(202, 227, 255);
+        }
+
+        table {
+            width: 100%
+        }
+
+        span.task {
+            display: inline-flex;
+            border-radius: 50%;
+            border: 1px solid white;
+            background: #ffbc00;
+            width: 2em;
+            height: 2em;
+            justify-content: center;
+            align-items: center;
+            font-weight: normal;
+            margin-top: 2em;
+        }
+
+        section.instructions {
+            padding: 2em;
+            background-color: rgb(255, 241, 196);
+            background-image: linear-gradient(1deg, white, transparent,rgba(255,255,255,0.5) 90%,transparent 100%);
+        }
+
+        section.instructions::before {
+            content: "Task Description";
+            font-size: 1.75em;
+            color: #ffbc00;
+            font-weight: bold;
+            transform: translateY(-2em) rotate(1deg);
+            display: block;
+            margin-bottom: -2em;
+            text-align: center;
+        }
+
+        section.pass, section.exceed, section.ok {
+            margin-top: 1em;
+        }
+
+        section.pass span, section.exceed span, section.hint span, section.ok span {
+            margin-right: 0.5em;
+            padding: 0.5em;
+            display: inline-block;
+        }
+
+        section.pass {
+            border: 2px solid green;
+        }
+
+        section.ok {
+            border: 2px solid rgb(6, 175, 6);
+        }
+
+        section.exceed {
+            border: 2px solid rgb(34, 255, 34);
+        }
+
+        section.hint {
+            border: 2px solid rgb(255, 214, 34);
+        }
+
+        section.pass span {
+            background-color: green; color: white;
+            background-image: linear-gradient(45deg, #000000a6, transparent);
+        }
+
+        section.ok span {
+            background-color: rgb(6, 175, 6); color: white;
+            background-image: linear-gradient(135deg, #000000a6, transparent);
+        }
+
+        section.exceed span {
+            background-color: rgb(34, 255, 34); 
+            background-image: linear-gradient(-45deg, white, transparent);
+        }
+
+        section.hint span {
+            background-color: rgb(255, 214, 34);
+            background-image: linear-gradient(-45deg, white, transparent);
+        }
+
+        .deadline {
+            text-align: right;
+        }
+
+        p.deadline {
+            font-size: 2em;
+        }
+
+        .deadline b {
+            border-bottom: 1px solid black;
+        }
+
+        form label {
+            display: inline-block;
+            margin-right: 1em;
+            vertical-align: middle;
+        }
+
+
+form button {
+    min-width: 10em;
+    min-height: 2em;
+    background: #008d4f;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+form input[type=text],
+form textarea,
+form select {
+    flex: 3;
+    margin: 0.5em;
+	font-size: 1.1em;
+}	
+
+form p { display: flex; 
+	align-items: stretch;
+    min-height: 2.5em;
+    padding-left: 0.5em; 
+flex-direction: column}
+
+    </style>
+</head>
+<body>
+
+    <header>    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="usi-logo" x="0px" y="0px" width="200" height="200" viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve" class="injected-svg svg">
+        <g>
+            <path d="M180,41.7h-51.1V31.1h42.2C153.1,12.5,127.8,1,99.9,1C45.2,1.1,0.9,45.4,1,100.1c0,26.8,10.7,51.1,28.1,68.9   c-1.4-2-2.4-4.1-3-6.1c-1-3.5-1-5.9-1.1-15.8v-47.1h14.8v48.5c0,3.4-0.1,6.6,1,9.6c3,7.6,11.3,8.5,16,8.5c2.3,0,8.3-0.1,12.6-3.9   c4.4-3.9,4.4-8.4,4.4-15v-47.7h14.9v49.7c-0.1,8.9-0.1,16.3-8.5,23.5c-8,7-18.4,7.7-23.8,7.7c-4.8,0-9.5-0.6-14-2.1   c-1.8-0.6-3.5-1.4-5-2.3c17.1,14,39,22.4,62.8,22.4c54.7-0.1,99-44.4,98.9-99.1C199,78.1,191.9,58,180,41.7z M175.3,94.4l-6.3-9   c2.1-1.4,8.7-5.7,8.7-17.7c0-2-0.2-4.1-1-6.2c-1.7-4.1-4.6-4.9-6.6-4.9c-3.6,0-4.9,2.5-5.7,4.3c-0.5,1.3-0.6,1.5-1.8,6.6l-1.5,6.9   c-0.9,3.6-1.3,5.4-2,7.2c-1.1,2.6-4.5,9.6-14,9.6c-10.9,0-17.8-9.2-17.8-22.6c0-12.3,6.1-19,11.6-23l6.6,8.8   c-2.8,1.9-8.5,5.7-8.5,14.8c0,5.8,2.6,10.8,7,10.8c4.9,0,5.8-5.3,6.8-10.5l1.3-5.9c1.6-7.7,4.8-18.6,17-18.6   c13.1,0,18.4,12.2,18.4,24.3c0,3.2-0.3,6.7-1.3,10.2C185.1,83.4,182.3,90.1,175.3,94.4z"></path>
+        </g>
+        </svg>
+        <div class="title">
+            <h2></h2>
+            <h1></h1>
+        </div>
+        <ul>
+            <li>Prof. Cesare Pautasso</li>
+        </ul>
+        </header>
+
+    <main>
+        <p><h3></h3><h2 id="adr-1">ADR #1</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>Which platform should Skip run on.</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>We want to guarantee Skip users a good compromise of usability and utility at a
+reasonable development cost.</p>
+<p>The application should be as immediate as possible to access and push users to
+give updates on the conditions of the slopes.</p>
+<p>Another important factor to keep in mind is the &#39;effort&#39; that would be required
+from the users part to start using the application for instance using a web app
+doesn&#39;t require any installations.</p>
+<p>This is a key decision that affects the marketing and design architecture of
+the whole software:</p>
+<ul>
+<li><p>From a coding perspective programming languages available across platforms
+are not the same. We also need to keep in mind that available computing power
+vastly differs platform to platform</p>
+</li>
+<li><p>Best UI practices vastly differs on different platforms for instance a phone
+has a smaller screen size and ratio compared to a desktop PC</p>
+</li>
+<li><p>There are revenue consequences based on these decisions, for instance mobile
+app stores will take a portion of our profits but at the same time offer a more
+ample access to the marketing</p>
+</li>
+</ul>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>What&#39;s the best way for users to access our service?</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>Web app</li>
+<li>Mobile app</li>
+<li>Desktop</li>
+<li>Mobile + Desktop</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>Mobile</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>Users need an interface to quickly access the applicable features and give updates
+on the condition of the snow while on the slopes. Given most users will go skiing
+with their smartphones rather than their computers we need to make the app available
+on them. We can do so either via web app or mobile application, web apps tend to
+be hard to use while on the snow so we need at least mobile app.</p>
+<p>The application doesn&#39;t feature complex user interactions that would justify
+the need of a desktop version. We also need to consider that a user from a Desktop
+might use the app to evaluate the condition of the slopes but likely won&#39;t come
+back home to open it again to provide feedback on their conditions which is something
+our application needs.</p>
+<p>PROS:</p>
+<ul>
+<li>not developing also a Desktop app saves component</li>
+<li>the app store gives a large market access on the fly</li>
+<li>the application will be easily accessible while skiing</li>
+<li>it&#39;s easier to have a good design on a mobile app rather than a web apps</li>
+</ul>
+<p>CONS:</p>
+<ul>
+<li>revenue cut by app stores</li>
+<li>users without a smartphone won&#39;t be able to access the application</li>
+<li>more effort required from the users part to start using the application compared
+to a web app</li>
+<li>more expensive to develop a web app compared to a mobile one</li>
+</ul>
+
+<h3></h3><h2 id="adr-2">ADR #2</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>Which mobile OS should the application run on?</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>We want our application to be accessible to the largest possible amount of users.
+We need to consider that developing an app on multiple OS has a considerable impact
+on developing costs.
+Different technologies are available on different OS so this choice will impact
+our code.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>How can we make the application available to a large portion of our potential
+users without a heavy impact on its usability and development costs?</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>Android</li>
+<li>IoS</li>
+<li>X-platform</li>
+<li>(Android &amp; IoS) native</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>X-platform</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>Excluding on of the OS would cut out a significant portion of our users as currently
+the split between Android/Apple devices is roughly 7:3.
+A x-platform solution allows to access both markets while at the same time
+not bloating maintenance and development costs.
+The tradeoff is in usability.</p>
+<p>PROS:</p>
+<ul>
+<li>access to nearly all potential users</li>
+<li>less expensive compared to a native solution</li>
+</ul>
+<p>CONS:</p>
+<ul>
+<li>more expensive compared to a single OS solution</li>
+<li>no access to native OS specific features</li>
+</ul>
+
+<h3></h3><h2 id="adr-3">ADR #3</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>Which framework to use to implement the X-platform app.</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>Developing the application with a feature rich and reliable framework will
+reduce costs and deliver a better product.</p>
+<p>Programmers need to be able to work with the framework thus either they are
+already comfortable with it or they will need to learn how to use it.</p>
+<p>This decision has an impact on the code design.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>How can we make our app as easy to implement as possible?</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>React native</li>
+<li>Flutter</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>Not enough information to pick one yet. Further options need to be explored.</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>//</p>
+
+<h3></h3><h2 id="adr-4">ADR #4</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>How we should gain money from the application</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>We need to make a profit from our application.</p>
+<p>We need to consider that certain solution will impact the amount of users of the
+application (ex: making the app paid) or impact the usability (ex: aggressive ads)</p>
+<p>This decision is a marketing one but might slightly impact UI design and code if
+we want to add ads to the application. For donations we will need to implement
+a secure way to send them code-wise.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>How can we profit from the application?</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>paid application</li>
+<li>free application with ads</li>
+<li>free application with donations</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>free application with ads</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>An application can only be paid if it offers a service indispensable for the
+user while at the same time being by far the best
+product available on the market (ex: photoshop).
+Users will be very shy to download a paid app on the a mobile store in part given
+the fierce competition on it.
+That being said making the app paid would surely reduce the amount of users
+in turn reducing the amount of snow updates we get from them.</p>
+<p>At the cost of some usability ads can provide a steady flow of revenue without
+the big barrier on the download an initial payment would be. We could also
+consider the option to remove ads with a payment.</p>
+<p>Donations don&#39;t impact the usability of the app but likely don&#39;t provide enough
+revenue. More research would be needed on this topic to confirm it as there seem
+to be conflicting opinions on the topic.</p>
+<p>PROS:</p>
+<ul>
+<li>steady flow of revenue</li>
+<li>no download barrier</li>
+</ul>
+<p>CONS:</p>
+<ul>
+<li>usability tradeoff</li>
+<li>need to change UI to fit ads</li>
+</ul>
+
+<h3></h3><h2 id="adr-5">ADR #5</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>How to incentivise users to give snow updates</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>We want users to provide as much updates on the condition of the snow as possible
+to offer consistent and up to date reports.</p>
+<p>We can&#39;t make the feedback too long or invasive or users won&#39;t compile it.</p>
+<p>The incentives can&#39;t heavily impact the profits of our application.</p>
+<p>This is a marketing decision with a minor impact on the code of the application
+albeit way to give incentives will have to be implemented.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>Users might not provide updates if they don&#39;t feel they gain something from it.
+At the same time an incentive perceived as too large might prompt them to
+leave fake updates</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>no incentives</li>
+<li>small payment</li>
+<li>lottery</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>lottery</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>By providing no incentives it would be up to the user&#39;s goodwill to leave updates
+which might still happen (reviews exist even if no one gets paid for them).</p>
+<p>We could issue small payment to users for their updates but these payments would
+be so small in order to still manage to make a profit off the app that users might
+perceive them as a &#39;job&#39; they are not getting paid enough to do.</p>
+<p>A lottery of ski related items might be the best options since it doesn&#39;t cost
+much compared to the perceived value from the user&#39;s part and might also introduce
+the fun factor.</p>
+<p>PROS:</p>
+<ul>
+<li>incentive for the users</li>
+</ul>
+<p>CONS:</p>
+<ul>
+<li>lotteries have to abide legal regulations</li>
+<li>lottery still impacts operating costs albeit in a minor way</li>
+<li>it might incentivise users to leave fake updates. A countermeasure needs to be
+designed.</li>
+</ul>
+</p>
+
+    </main>
+
+
+<footer>
+
+</footer>
+
+</body>
+
+</html>
