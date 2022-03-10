@@ -1,0 +1,30 @@
+## Example Scenario
+
+Quality: _Deployability_ , _Maintainability_
+
+Scenario: The whole software (app + server) should have a test coverage of
+at least 95% when deployed and for its whole lifecycle.
+
+Without said requirement an automatic pipeline should fail the deployment.
+
+
+```puml
+@startuml
+
+skinparam componentStyle rectangle
+skinparam monochrome true
+skinparam shadowing false
+
+rectangle "When the software is being deployed" {
+
+rectangle "Admin" as Source
+rectangle "has 95% test coverage" as Measure
+
+Source -> [Software] : "deployes"
+
+[Software] -> [Measure] : "deployment is successful"
+
+}
+
+@enduml
+```

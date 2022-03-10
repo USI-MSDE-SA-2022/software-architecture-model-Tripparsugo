@@ -1,0 +1,27 @@
+## Example Scenario
+
+Quality: _Availability_
+
+Scenario: The application should have an uptime of at least 99.5% for weather
+and slop info assuming a connection is available.
+
+```puml
+@startuml
+
+skinparam componentStyle rectangle
+skinparam monochrome true
+skinparam shadowing false
+
+rectangle "When the user wants to use the app and he has an internet connection available" {
+
+rectangle "User" as Source
+rectangle "99.5% of the time" as Measure
+
+Source -> [App] : "ask weather and slop info"
+
+[App] -> [Measure] : "the info is provided"
+
+}
+
+@enduml
+```
