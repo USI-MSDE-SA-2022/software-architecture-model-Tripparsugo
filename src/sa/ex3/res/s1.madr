@@ -1,8 +1,8 @@
-## Example Scenario
+## Example Scenario 1
 
 Quality: _Affordability_ , _Portability_ , _Deployability_
 
-Scenario: The code written for the application is compatible with both Adnroid
+Scenario: The code written for the application is compatible with both Android
 and IoS  with none or relatively trivial changes costing little effort,
 time and money to be deployed on both OS at the same time once the code is written.
 

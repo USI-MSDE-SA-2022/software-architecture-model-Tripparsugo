@@ -1,4 +1,4 @@
-## Example Scenario
+## Example Scenario 7
 
 Quality: _Visibility_ , _Maintainability_ , _Privacy_
 
@@ -7,7 +7,6 @@ show the user a clear message stating the reason. If the reason is a fault in
 the software a log should be sent to the developer not containing sensible user
 data.
 
-Without said requirement an automatic pipeline should fail the deployment.
 
 
 ```puml
@@ -24,7 +23,7 @@ rectangle "logs are private" as Measure
 
 Source -> [App] : "operates"
 
-[Software] -> [Measure] : "shows cause of unavailability (ex: no connection). If error sends logs"
+[App] -> [Measure] : "shows cause of unavailability (ex: no connection). If error sends logs"
 
 }
 
