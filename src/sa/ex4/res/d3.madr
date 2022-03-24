@@ -1,0 +1,10 @@
+## Interoperability vs. simplicity
+
+We will need to gather as much data as possible from various sources about weather
+and snow conditions.
+Since there is no single API that provides this service we will need to aggregate
+data from multiple sources including what we receive from our users.
+
+This will inevitably increase the complexity of our project as we will need
+sift our data through many levels to clean and filter it but it's a worthy tradeoff
+when we consider how much it benefits the utility of our service.
