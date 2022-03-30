@@ -16,10 +16,5 @@
     "build": "node build.js",
     "clean": "rm -rf upload/*",
     "watch": "onchange src/** -- yarn build"
-  },
-<<<<<<< HEAD
-  "doc_build": 146
-=======
-  "doc_build": 140
->>>>>>> b81f7b0b9770b886e3bd244751035c3b27192cb2
+  }
 }
