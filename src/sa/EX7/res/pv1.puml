@@ -1,0 +1,44 @@
+@startuml
+title PV: getting resort info
+
+participant "User Interface" as P1
+participant "Skip App" as P2
+participant "Skip API" as P3
+participant "Service" as P4
+participant "Data Aggregator" as P5
+participant "Info DB" as P6
+participant "Cache DB" as P7
+participant "External API" as P8
+
+P1 -> P2 : request  resort info
+P2 -> P3 : GET resort info
+P2 -> P3 : GET maps
+P2 -> P3 : GET weather
+P3 -> P4 : get info
+P4 -> P5 : get info
+P5 -> P7 : search if in cache
+
+P5 -> P6 : search info
+P6 -> P5 : elaborated info
+
+P5 -> P7 : post elaborated info
+P5 -> P8 : search info
+P8 -> P5 : info
+
+
+
+P5 -> P4 : aggregated info
+P4 -> P3 : aggregated info
+
+
+P3 -> P2 :  info
+P2 -> P1 :  info
+
+
+
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+@enduml

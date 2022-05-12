@@ -1,0 +1,36 @@
+@startuml
+title PV: planning trip with other user
+
+participant "User Interface" as P1
+participant "Skip App" as P2
+participant "Skip API" as P3
+participant "Service" as P4
+participant "User DB" as P5
+
+
+P1 -> P2 : retrive info to visualize best closeby resorts
+P2 -> P3 : get info
+P3 -> P4 : get info
+P4 -> P3 :  info
+P3 -> P2 :  info
+P2 -> P1 :  info
+
+P1 -> P2 : planned  a trip
+P2 -> P3 : post planned trip
+P3-> P4 : save planned trip
+P4 -> P5 : store planned trip
+
+
+P1 -> P2 : match with user with similar trip
+P2 -> P3 : POST user match
+P3-> P4 : save user match
+P4 -> P5 : store user match
+
+
+
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+@enduml
