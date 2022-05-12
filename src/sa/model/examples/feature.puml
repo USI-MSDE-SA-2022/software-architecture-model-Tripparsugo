@@ -1,9 +1,9 @@
 
 @startuml
-rectangle "Feature" as A
+rectangle  "Feature" as A #red
 rectangle "Optional" as B
 rectangle "Required" as C
- 
+
 A --0 B
 A --@ C
 
@@ -13,7 +13,7 @@ note left
 end note
 rectangle "Sub Feature 1" as F
 rectangle "Sub Feature 2" as G
- 
+
 E *-- F
 E *-- G
 

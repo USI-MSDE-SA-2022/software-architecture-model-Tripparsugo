@@ -1,0 +1,16 @@
+## Sustainability vs. Ease of support
+
+Depending on the complexity of use and importance of a service for a user
+providing strong and reliable support can be a necessity for its success.
+There are different ways of providing support with vastly different costs. For
+instance Apple has set up a support network through its many shops while Adobe
+has support available only on a call service.
+
+Maintaining support for the duration of the service clearly incours in running
+costs that can ultimately hurting the sustainability of it so the degree of needed
+support must clearly be estimated before deplyment.
+
+In our case the application should be very easy to use and at the same time a provide
+a service that, while useful, is not absoulutely necessary for the customer. We thus
+opt to provide a very cheap for of support limited to mails. While this might lose us
+some customers we evaluate the spared resources to be worth the tradeoff.

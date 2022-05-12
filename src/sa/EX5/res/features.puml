@@ -1,0 +1,132 @@
+@startuml
+rectangle  "Skip"  as A0 #lightgreen
+
+
+rectangle "Data Source"  as B0 #lightgreen
+rectangle "Device position"  as B1 #lightgreen
+rectangle "External API"  as B2 #lightgreen
+rectangle "User"  as B3 #lightgreen
+rectangle "Resort review"  as B4 #lightgreen
+rectangle "Snow review"  as B5 #lightgreen
+rectangle "GPS"  as B6 #lightgreen
+rectangle "Wi Fi"  as B7 #lightgreen
+
+rectangle "Account"  as C0 #lightgreen
+rectangle "Favorite Resorts"  as C1 #lightgreen
+rectangle "Contacts"  as C3 #lightgreen
+rectangle "List"  as C4 #lightgreen
+rectangle "Map"  as C5 #lightgreen
+
+
+rectangle "Resort info"  as D0 #lightgreen
+rectangle "Weather"  as D1 #lightgreen
+rectangle "Affluence"  as D2 #lightgreen
+rectangle "Today"  as D3 #lightgreen
+rectangle "Week"  as D4 #lightgreen
+rectangle "Season"  as D5 #lightgreen
+rectangle "Slopes"  as D6 #lightgreen
+rectangle "Opening time"  as D7 #lightgreen
+rectangle "Prices"  as D8 #lightgreen
+
+
+rectangle "Rewards"  as E0 #lightgreen
+rectangle "Lottery"  as E1 #lightgreen
+rectangle "Direct pay"  as E2
+
+rectangle "Travel Sharing" as F0 #lightgreen
+rectangle "Destination Picking" as F1 #lightgreen
+rectangle "Chat" as F2 #lightgreen
+
+rectangle "Overview"  as H0 #lightgreen
+rectangle "Heatmap"  as H1 #lightgreen
+rectangle "Snow Conditions"  as H2 #lightgreen
+rectangle "Weather"  as H3 #lightgreen
+rectangle "Affluence"  as H4 #lightgreen
+rectangle "Top List"  as H5 #lightgreen
+rectangle "Snow Conditions"  as H6 #lightgreen
+rectangle "Weather"  as H7 #lightgreen
+rectangle "Affluence"  as H8 #lightgreen
+
+
+
+A0 --@ B0
+A0 --0 C0
+A0 --@ D0
+A0 --0 E0
+A0 --0 F0
+A0 --@ H0
+
+
+
+B0 --* B1
+B0 --* B2
+B0 --* B3
+
+B1 --* B6
+B1 --* B7
+
+B3 --* B4
+B3 --* B5
+
+B4 -[dotted]> C0
+
+
+
+C0 --0 C1
+C0 --0 C3
+C1 --* C4
+C1 --* C5
+
+
+
+
+D0 --* D1
+D0 --* D2
+D0 --* D6
+D0 --* D7
+D0 --* D8
+D2 --@ D3
+D2 --0 D4
+D2 --0 D5
+D6 -[dotted]> B2
+D7 -[dotted]> B2
+D8 -[dotted]> B2
+
+
+
+E0 --o E1
+E0 --o E2
+E0 -[dotted]> C0
+
+
+F0 --@ F1
+F0 --@ F2
+F0 -[dotted]> C0
+
+
+
+H0 --* H1
+H1 --* H3
+H1 --* H4
+H1 --* H2
+H0 --* H5
+H5 --* H8
+H5 --* H6
+H5 --* H7
+
+
+H3 -[dotted]> B2
+H7 -[dotted]> B2
+D1 -[dotted]> B2
+
+
+H4 -[dotted]> B1
+H8 -[dotted]> B1
+
+
+
+
+
+skinparam shadowing false
+skinparam defaultFontName Courier
+@enduml
