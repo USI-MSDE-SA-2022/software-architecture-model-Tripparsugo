@@ -1,4 +1,3 @@
-```puml
 @startuml
 title PV: review when no connection
 
@@ -26,4 +25,3 @@ skinparam monochrome true
 skinparam shadowing false
 skinparam defaultFontName Courier
 @enduml
-```
