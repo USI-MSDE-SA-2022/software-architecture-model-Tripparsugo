@@ -1391,7 +1391,9 @@ skinparam defaultFontName Courier
 
 
 
-
+``` 
+"Data aggregator" and "External API" sub-components are not connected. 
+```
 
 # Ex - Component Model: Bottom-Up
 
