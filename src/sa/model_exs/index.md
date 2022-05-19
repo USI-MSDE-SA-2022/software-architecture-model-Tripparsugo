@@ -1414,6 +1414,329 @@ Exceed: Redesign based on >3 reused components (1 Logical View, >1 Process View,
 }
 
 
+
+```puml
+@startuml
+skinparam componentStyle rectangle
+
+!include <tupadr3/font-awesome/database>
+
+title Logical View
+
+
+component "Mobile App" as APP {
+
+component "User Interface (React Native)" as UI
+component "Redux Store (Redux + Thunk)" as RES
+interface " " as RES_
+RES - RES_
+component "Redux Actions" as REA
+interface " " as REA_
+REA - REA_
+
+
+component "LS Service (Realm)" as MSRV
+interface " " as MSRV_
+MSRV_ - MSRV
+
+
+component "Local Storage" as LS
+interface " " as LS_
+LS - LS_
+
+
+REA_ )-- UI
+LS_ )-- MSRV
+
+}
+
+
+
+component "Skip API (Kotlin + Spring framework)" as SA  {
+
+component "Controller" as CTRL
+component "Service" as SRV
+interface " " as SRV_
+SRV - SRV_
+
+
+component "User Repositories" as UREP
+interface " " as UREP_
+UREP -- UREP_
+
+component "Cache repositories" as CREP
+interface " " as CREP_
+CREP -- CREP_
+
+
+component "Data Aggregator" as AGG{
+component "Snow Conditions Collector" as SNA
+
+component "Weather Collector" as WA
+
+component "Resort Info Collector" as RA
+
+component "Geo Collector" as GA
+}
+interface " " as AGG_
+AGG - AGG_
+
+
+}
+interface " " as SA_
+
+
+
+
+
+
+
+
+component "Info db (elasticsearch)" as IDB
+interface " " as IDB_
+IDB - IDB_
+
+component "User db (mySQL)" as UDB
+interface " " as UDB_
+UDB - UDB_
+
+
+component "Cache db (Redis)" as CDB
+interface " " as CDB_
+CDB - CDB_
+
+
+
+
+
+component "External API" as EA{
+component "weatherski" as AP1
+
+component "skiapi" as AP2
+
+component "onthesnow" as AP3
+
+}
+interface " " as EA_
+EA_ -- EA
+
+
+
+
+
+
+
+SRV_ )- CTRL
+UREP_ )-- SRV
+IDB_ )-- SRV
+AGG_ )-- SRV
+CREP_ )-- AGG
+IDB_ )- AGG
+EA_ )- AGG
+RES_ )- REA
+
+UDB_ )-- UREP
+CDB_ )-- CREP
+SA_ -- SA
+
+SA_ )-  REA
+MSRV_ )-- REA
+
+
+
+
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+@enduml
+```
+
+
+
+
+
+
+```puml
+@startuml
+title PV: requesting resort info
+
+participant "User Interface" as P1
+participant "Redux Actions" as P2
+participant "Redux Store" as P3
+participant "Skip API" as P4
+
+
+
+P1 -> P2: dispatchShowResort(dispatch, resortId)
+P2 -> P3: dispatch("FETCHING_RESORT_INFO")
+P1 -> P1: refresh
+P2 -> P4: fetch(apiURL)
+P4 -> P2: return resort info
+P2 -> P3: dispatch("FETCHED_RESORT_INFO_SUCCESS", resortInfo)
+P1 -> P1: refresh
+P2 -> P3: dispatch("SHOW_RESORT_INFO", resortId)
+P1 -> P1: refresh
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+@enduml
+```
+
+
+
+```puml
+@startuml
+title PV: Computing overview
+
+participant "Service" as P1
+participant "Data Aggregator" as P2
+participant "Snow Condition Collector" as P3
+participant "Weather Collector" as P4
+participant "Resort Info Collector" as P5
+participant "Geo Info Collector" as P6
+participant "onthesnow.com" as P7
+participant "openweathermap.org" as P8
+participant "rapidapi.com/ski-resorts-and-conditions" as P9
+participant "info DB" as P10
+participant "cache repositories" as P11
+
+
+
+P1 -> P2: getHeatMapOverviewData()
+P2 -> P11: cacheRepositories.HeatMap.search(nKm)
+P11 -> P1: data
+
+P2 -> P3: getGlobalWeatherConditions()
+P3 -> P11: cacheRepositories.Weather.search(nKm)
+P11 -> P3: data
+P3 -> P8: fetch(openWeatherUrl)
+P8 -> P3: data
+P8 -> P11: add data to cache
+P3 -> P2: formatted data
+
+P2 -> P4: getGlobalSnowConditions()
+P4 -> P11: cacheRepositories.SnowConditions.search(nKm)
+P11 -> P4: data
+P4 -> P7: fetch(onTheSnow)
+P7 -> P4: data
+P4 -> P9: fetch(skiCondionUrl)
+P9 -> P4: data
+P4 -> P10: fetch(elasticSearchUrl, {body: esQuery})
+P4 -> P11: add data to cache
+P10 -> P4: data
+P4 -> P2: formatted data
+
+
+P2 -> P5: getGlobalResortList()
+P5 -> P11: cacheRepositories.ResortList.get()
+P11 -> P5: data
+P4 -> P11: add data to cache
+P5 -> P2: formatted data
+
+P2 -> P1: overView Data for heatmap
+
+
+
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+@enduml
+```
+
+
+
+## ADR #1
+
+1. What did you decide?
+
+What language and framework should the app use for the backend?
+
+2. What was the context for your decision?
+
+
+
+The choice of  language that can scale well to write medium to large sized applications
+and a well maintaned and usable framework will make the application more
+maintainable, increase reliability (less bugs) and likely reduce our time to market
+so it's a key decision.
+
+
+3. What is the problem you are trying to solve?
+
+Writing programs is hard with the wrong technology so we want to pick the proper one.
+
+
+4.  Which alternative options did you consider?
+
+* Java + Spring
+* Kotlin + Spring
+* Kotlin + Ktor
+* JS + Express
+
+5. Which one did you choose?
+
+Kotlin + Spring
+
+6. What is the main reason for that?
+
+JS is very bug prone and while being a very quick solution for small scale applications
+it doesn't scale well beyond that.
+
+Java has consinstently proven itself to be a good language to develop sstable
+backend and Spring is also a well tested framework in that regard.
+
+While certainly being a solid language Java starts to show signs of its age and
+due to retrocompatibility concerns it never solved some of its core issues (ex: null management)
+
+Kotlin offers a more modern approach to OOP and is completely Interoperable with Java so
+the transition to it shouldn't be traumatic for most programmers.
+
+Ktor is a more modern framework but on the other hand it doesn't have the same amount
+of material on it as we can find about Spring nor it's as easy to find people with
+knowledge about it.
+
+PROS:
+
+* Kotlin is a statically typed language which will reduce the potential for bugs compared to JS
+* Kotlin solves key issues of Java such as excessive verbosity and null management
+* Spring is a well tested framework with lots of material on its usage
+
+
+CONS:
+
+* Developing a backend in Kotlin might be slower than JS
+* Ktor is a more modern and less verbose framework
+* Some programmers might initially be confused about some Kotlin features
+
+
+
+PRICINGS:
+
+Every software is free beside hardware costs. Using the following external APIs:
+
+- https://rapidapi.com/random-shapes-random-shapes-default/api/ski-resorts-and-conditions/
+
+Subscription plan for 1k requests/day available for 10USD then 10USD/1k requests.
+
+- https://openweathermap.org/api
+Free up until 1k requests/day then 10USD/1k requests.
+
+- http://docs.clientservice.onthesnow.com/docs/getting_started.html
+
+Free
+
+
+
+
+
+
+
 # Ex - Interface/API Specification
 
 {.instructions
@@ -1441,6 +1764,419 @@ Good: Define interfaces of all outer-level components. Does your architecture pu
 Exceed: Also, document the Web API using the OpenAPI language. You can use the [OpenAPI-to-Tree](http://api-ace.inf.usi.ch/openapi-to-tree/) tool to visualize the structure of your OpenAPI description.
 
 }
+
+
+
+
+```puml
+@startuml
+skinparam componentStyle rectangle
+
+!include <tupadr3/font-awesome/database>
+
+title Logical View
+
+
+component "Mobile App" as APP {
+
+component "User Interface (React Native)" as UI
+component "Redux Store (Redux + Thunk)" as RES
+interface " " as RES_
+RES - RES_
+component "Redux Actions" as REA
+interface " " as REA_
+REA - REA_
+
+
+component "LS Service (Realm)" as MSRV
+interface " " as MSRV_
+MSRV_ - MSRV
+
+
+component "Local Storage" as LS
+interface " " as LS_
+LS - LS_
+
+
+REA_ )-- UI
+LS_ )-- MSRV
+
+}
+
+
+
+component "Skip API (Kotlin + Spring framework)" as SA  {
+
+component "Controller" as CTRL
+component "Service" as SRV
+interface " " as SRV_
+SRV - SRV_
+
+
+component "User Repositories" as UREP
+interface " " as UREP_
+UREP -- UREP_
+
+component "Cache repositories" as CREP
+interface " " as CREP_
+CREP -- CREP_
+
+
+component "Data Aggregator" as AGG{
+component "Snow Conditions Collector" as SNA
+
+component "Weather Collector" as WA
+
+component "Resort Info Collector" as RA
+
+component "Geo Collector" as GA
+}
+interface " " as AGG_
+AGG - AGG_
+
+
+}
+interface " " as SA_
+
+
+
+
+
+
+
+
+component "Info db (elasticsearch)" as IDB
+interface " " as IDB_
+IDB - IDB_
+
+component "User db (mySQL)" as UDB
+interface " " as UDB_
+UDB - UDB_
+
+
+component "Cache db (Redis)" as CDB
+interface " " as CDB_
+CDB - CDB_
+
+
+
+
+
+component "External API" as EA{
+component "openweathermap" as AP1
+
+component "skiapi" as AP2
+
+component "onthesnow" as AP3
+
+}
+interface " " as EA_
+EA_ -- EA
+
+
+
+
+
+
+
+SRV_ )- CTRL
+UREP_ )-- SRV
+IDB_ )-- SRV
+AGG_ )-- SRV
+CREP_ )-- AGG
+IDB_ )- AGG
+EA_ )- AGG
+RES_ )- REA
+
+UDB_ )-- UREP
+CDB_ )-- CREP
+SA_ -- SA
+
+SA_ )-  REA
+MSRV_ )-- REA
+
+
+
+
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+
+
+
+note top of UDB
+operation:
+..
+createRepository(Repository.class)
+--
+properties:
+..
+_users
+_trips
+--
+extra:
+
+..
+A  driver interacts with
+the specific database.
+ Here we denote that we
+have the possibility the
+create a repository with our
+framework through the driver
+without adding an additional
+component for it.
+end note
+
+
+
+
+note top of UREP
+operation:
+..
+User.create(userInfo])
+User.find(userId)
+User.auth(userId, userPassword)
+Trip.create(usersId, startDate,
+ endDate, resortId,
+travelType, available spots)
+end note
+
+
+note top of UREP
+operation:
+..
+createUser(userInfo)
+createTrip(tripInfo)
+findMatchingTrips(userId)
+--
+requires:
+UserDB.User.*
+UserDB.Trip.*
+end note
+
+
+
+note top of IDB
+operation:
+..
+search(query)
+addDocument(document)
+--
+extra:
+methods represent
+routes of ES API
+end note
+
+
+
+
+note top of AP1
+operation:
+..
+getWeatherHistory(lat, lon)
+getWeatherForecast(lat, lon)
+
+
+end note
+
+note top of AP2
+operation:
+..
+getResortTweets(resortName)
+getResortSnow(resortName)
+
+
+end note
+
+note top of AP3
+operation:
+..
+getResortsInRadius(lat, long, radius)
+getResortInfo(resortId)
+end note
+
+note top of SA
+operation:
+..
+createUser(userInfo)
+createTrip(userId, userAuth, tripInfo)
+matchUserTrips(userId, userAuth)
+authUser(userId, password)
+getResortInfo(resortId)
+getCloseResorts(lat,lon, dist)
+getOverview(lat, lon, dist)
+--
+requires:
+Controller.*
+end note
+
+note top of SRV
+operation:
+..
+createUser(userInfo)
+createTrip(userId, tripInfo)
+findUser(userId)
+matchUserTrips(userId)
+authUser(userId, password)
+getResortInfo(resortId)
+getCloseResorts(lat,lon, dist)
+getOverview(lat, lon, dist)
+addSnowUpdate(snowUpdate)
+--
+requires:
+..
+DataAggregator.*
+UserRepositories.*
+InfoDb.addDocument(document)
+
+end note
+
+
+
+note top of CTRL
+operation:
+..
+handleUserRoute(request)
+handleResortRoute(request)
+handleTripRoute(request)
+handleOverviewRoute(request)
+--
+requires:
+..
+Service.*
+
+end note
+
+note top of CDB
+operation:
+..
+put(key, value, duration)
+delete(key)
+get(key)
+--
+event:
+data expires
+
+end note
+
+
+note top of CREP
+operation:
+..
+Requests.get(src)
+Requests.put(src, data, duration)
+
+Overview.get(lat, lon)
+Overview.get()
+Overview.put(lat, long, data, duration)
+
+--
+event:
+data expires
+
+end note
+
+note top of LS
+operation:
+..
+createRepository(Repository.class)
+--
+extra:
+..
+We assume the functionality
+to be available from the Realm
+drivers.
+end note
+
+
+
+note top of MSRV
+operation:
+..
+createRepository(Repository.class)
+--
+require:
+LocalStorage.createRepository(Repository.class)
+--
+properties:
+_snow_updates
+
+
+end note
+
+note top of REA
+operation:
+..
+dispatchShowResort(dispatch, resortId)
+dispatchConfirmTrip(dispatch, tripInfo)
+dispatchCreateUser(dispatch, userInfo)
+dispatchShowHeatMapOverview(dispatch)
+dispatchShowTopResortsOverview(dispatch)
+
+--
+require:
+ReduxStore.*
+
+
+
+end note
+
+
+note top of UI
+operation:
+..
+visualizeOverview()
+viusalizeClosestResorts()
+viusalizeTripPlanner()
+visualizeResort()
+--
+require:
+ReduxActions.*
+end note
+
+note top of RES
+operation:
+..
+createStore(reducer)
+--
+properties:
+state
+--
+event:
+stateUpdate
+
+end note
+
+
+note top of AGG
+operation:
+..
+getResortData(resortId)
+getResortList(lat, lon, dist)
+getOverview(lat, lon, dist)
+--
+
+
+end note
+
+
+
+
+
+
+
+
+
+
+
+@enduml
+```
+
+
+
+
 
 # Ex - Connector View
 

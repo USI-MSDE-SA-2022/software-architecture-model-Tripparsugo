@@ -1,0 +1,315 @@
+@startuml
+skinparam componentStyle rectangle
+
+!include <tupadr3/font-awesome/database>
+
+title Logical View
+
+
+component "Mobile App" as APP {
+
+component "User Interface (React Native)" as UI
+component "Redux Store (Redux + Thunk)" as RES
+interface " " as RES_
+RES - RES_
+component "Redux Actions" as REA
+interface " " as REA_
+REA - REA_
+
+
+component "LS Service (Realm)" as MSRV
+interface " " as MSRV_
+MSRV_ - MSRV
+
+
+component "Local Storage" as LS
+interface " " as LS_
+LS - LS_
+
+
+REA_ )-- UI
+LS_ )-- MSRV
+
+}
+
+
+
+component "Skip API (Kotlin + Spring framework)" as SA  {
+
+component "Controller" as CTRL
+component "Service" as SRV
+interface " " as SRV_
+SRV - SRV_
+
+
+component "User Repositories" as UREP
+interface " " as UREP_
+UREP -- UREP_
+
+component "Cache repositories" as CREP
+interface " " as CREP_
+CREP -- CREP_
+
+
+component "Data Aggregator" as AGG{
+component "Snow Conditions Collector" as SNA
+
+component "Weather Collector" as WA
+
+component "Resort Info Collector" as RA
+
+component "Geo Collector" as GA
+}
+interface " " as AGG_
+AGG - AGG_
+
+
+}
+interface " " as SA_
+
+
+
+
+
+
+
+
+component "Info db (elasticsearch)" as IDB
+interface " " as IDB_
+IDB - IDB_
+
+component "User db (mySQL)" as UDB
+interface " " as UDB_
+UDB - UDB_
+
+
+component "Cache db (Redis)" as CDB
+interface " " as CDB_
+CDB - CDB_
+
+
+
+
+
+component "External API" as EA{
+component "openweathermap" as AP1
+
+component "skiapi" as AP2
+
+component "onthesnow" as AP3
+
+}
+interface " " as EA_
+EA_ -- EA
+
+
+
+
+
+
+
+SRV_ )- CTRL
+UREP_ )-- SRV
+IDB_ )-- SRV
+AGG_ )-- SRV
+CREP_ )-- AGG
+IDB_ )- AGG
+EA_ )- AGG
+RES_ )- REA
+
+UDB_ )-- UREP
+CDB_ )-- CREP
+SA_ -- SA
+
+SA_ )-  REA
+MSRV_ )-- REA
+
+
+
+
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+
+
+
+note top of UDB
+operation:
+..
+createRepository(Repository.class)
+--
+properties:
+..
+_users
+_trips
+--
+extra:
+
+..
+A driver interacts with
+the specific database.
+ Here we denote that we
+have the possibility the
+create a repository with our
+framework through the driver.
+end note
+
+
+
+
+note top of UREP
+operation:
+..
+User.create(userInfo])
+User.find(userId)
+User.auth(userId, userPassword)
+Trip.create(usersId, startDate,
+ endDate, resortId,
+travelType, available spots)
+end note
+
+
+note top of UREP
+operation:
+..
+createUser(userInfo)
+createTrip(tripInfo)
+findMatchingTrips(userId)
+--
+requires:
+UserDB.User.*
+UserDB.Trip.*
+end note
+
+
+
+note top of IDB
+operation:
+..
+search(query)
+addDocument(document)
+--
+extra:
+methods represent
+routes of ES API
+end note
+
+
+
+
+note top of AP1
+operation:
+..
+getWeatherHistory(lat, lon)
+getWeatherForecast(lat, lon)
+
+
+end note
+
+note top of AP2
+operation:
+..
+getResortTweets(resortName)
+getResortSnow(resortName)
+
+
+end note
+
+note top of AP3
+operation:
+..
+getResortsInRadius(lat, long, radius)
+getResortInfo(resortId)
+end note
+
+note top of SA
+operation:
+..
+createUser(userInfo)
+createTrip(userId, userAuth, tripInfo)
+matchUserTrips(userId, userAuth)
+authUser(userId, password)
+getResortInfo(resortId)
+getCloseResorts(lat,lon, dist)
+getOverview(lat, lon, dist)
+end note
+
+note top of SRV
+operation:
+..
+createUser(userInfo)
+createTrip(userId, tripInfo)
+findUser(userId)
+matchUserTrips(userId)
+authUser(userId, password)
+getResortInfo(resortId)
+getCloseResorts(lat,lon, dist)
+getOverview(lat, lon, dist)
+addSnowUpdate(snowUpdate)
+--
+requires:
+..
+DataAggregator.*
+UserRepositories.*
+InfoDb.addDocument(document)
+
+end note
+
+
+
+note top of CTRL
+operation:
+..
+handleUserRoute(request)
+handleResortRoute(request)
+handleTripRoute(request)
+handleOverviewRoute(request)
+--
+requires:
+..
+Service.*
+
+end note
+
+note top of CDB
+operation:
+..
+put(key, value, duration)
+delete(key)
+get(key)
+--
+event:
+data expires
+
+end note
+
+
+note top of CREP
+operation:
+..
+Requests.get(src)
+Requests.put(src, data, duration)
+
+Overview.get(lat, lon)
+Overview.get()
+Overview.put(lat, long, data, duration)
+
+--
+event:
+data expires
+
+end note
+
+
+
+
+
+
+
+
+
+
+
+@enduml
