@@ -1,0 +1,33 @@
+@startuml
+
+component sources as S{
+component "Source 1" as S1
+component "Source 2" as S2
+component "Source 3" as S3
+component "Source n" as SN
+}
+
+
+component Collectors  as E{
+component "Collector Type 1" as E1
+component "Collector Type 2" as E2
+component "Collector Type m" as EM
+}
+
+component Aggregator as A
+
+A -> E
+E1 --> S1
+E1 --> S2
+
+E2 --> S1
+E2 --> S3
+
+EM -> SN
+EM -> S2
+
+E1 -> E2
+
+
+
+@enduml

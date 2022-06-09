@@ -1391,8 +1391,8 @@ skinparam defaultFontName Courier
 
 
 
-``` 
-"Data aggregator" and "External API" sub-components are not connected. 
+```
+"Data aggregator" and "External API" sub-components are not connected.
 ```
 
 # Ex - Component Model: Bottom-Up
@@ -1560,6 +1560,11 @@ skinparam defaultFontName Courier
 
 
 
+|
+
+
+
+
 ```puml
 @startuml
 title PV: requesting resort info
@@ -1587,6 +1592,12 @@ skinparam shadowing false
 skinparam defaultFontName Courier
 @enduml
 ```
+
+
+
+|
+
+
 
 
 
@@ -1650,6 +1661,8 @@ skinparam shadowing false
 skinparam defaultFontName Courier
 @enduml
 ```
+
+
 
 
 
@@ -2182,6 +2195,8 @@ end note
 
 # Ex - Connector View
 
+
+
 {.instructions
 
 Extend your existing models introducing the connector view
@@ -2198,6 +2213,292 @@ Exceed: introduce a new type of connector and update your existing process view
 (sequence diagram) to show the connector primitives in action
 
 }
+
+
+We have split the connector view in two sections:
+
+Here is up to the "Data Aggregator" component
+
+```puml
+@startuml
+component Mobile_App as APP {
+
+component "User Interface" as UI
+component "Local Storage" as LS
+}
+
+
+component "Skip API" as API
+APP --> API : web
+
+
+component "Service" as SERV1
+API -> SERV1: call
+
+
+component "User DB (mySql)" as DB1
+SERV1 -> DB1 : rpc
+
+component "Info db (elasticsearch)" as DB2
+SERV1 --> DB2 : web
+
+
+component "Data aggregator" as DT
+SERV1 --> DT : call
+
+@enduml
+```
+
+Here's the Data aggregator section:
+
+```puml
+@startuml
+
+
+component "Info db (elasticsearch) (shared)" as DB
+
+
+component "Data aggregator" as DT
+
+component "Data collectors" as DE{
+
+}
+
+component "External APIs" as APIS
+
+DE -> APIS: web
+DE --> DB : web
+DT --> DB : web
+
+@enduml
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+For the "Data aggregator" we are using a shared DB connector as explained with the
+following ADR:
+
+## ADR
+
+1. What did you decide?
+
+How the components fetching data for the backend SKIP should be connected
+
+2. What was the context for your decision?
+
+We have different data sources that are processed to produce different types
+of data by collectors which is then aggregated. Ideally this would not be
+necessary but some collectors need to access data collected by other collectors.
+For instance the weather collector needs the list of resorts he needs
+to get the weather for.
+Below a graph representing the situation:
+
+
+```puml
+@startuml
+
+component sources as S{
+component "Source 1" as S1
+component "Source 2" as S2
+component "Source 3" as S3
+component "Source n" as SN
+}
+
+
+component Collectors  as E{
+component "Collector Type 1" as E1
+component "Collector Type 2" as E2
+component "Collector Type m" as EM
+}
+
+component Aggregator as A
+
+A -> E
+E1 --> S1
+E1 --> S2
+
+E2 --> S1
+E2 --> S3
+
+EM -> SN
+EM -> S2
+
+E1 -> E2
+
+
+
+@enduml
+```
+
+
+
+
+
+
+3. What is the problem you are trying to solve?
+
+We want to avoid a potentially large processing time to be felt by users.
+
+We want the coupling between the various collectors to be as loose as possible.
+
+We want a flexible way to manipulate the ingested data.
+
+4.  Which alternative options did you consider?
+
+* Procedure Call
+* Bus
+* Shared DB
+
+
+5. Which one did you choose?
+
+Shared DB
+
+6. What is the main reason for that?
+
+With a shared DB each collector is only coupled with the shape of the data he
+needs to work with and doesn't need to directly communicate with other components
+(with a procedure call we would have instead a very tigh coupling).
+Due to the loose coupling we can easily scale our collectors to use multiple
+sources and just need to provide appropiate adapters.
+
+A shared DB can support mutual dependencies between two collectors
+as the data will eventually converge with time. We also don't need to worry about
+potential cascading updates that could be caused by one collector updating its
+data (as would happen with a Bus).
+
+A shared DB can potentially support very expressive queries if needed by the
+collectors.
+
+A shared DB allows to store collectors to store history if needed.
+
+Data in a shared DB can be queried and analyzed outside of the application
+if needed by the developpers.
+
+
+With the newly adopted connector we have turned the aggregation and collection
+of data into an active task to avoid the user having to wait for it.
+
+This comes at the cost of more processing and calls required for potentially
+unneeded data but we believe it to be worth the tradeoff.
+
+
+
+
+
+
+
+
+
+
+
+The following process view shows the work behind a call to the API, as we cant
+observe updates happen independently:
+
+```puml
+@startuml
+title PV: Computing overview and resort info
+
+participant "Service" as P1
+participant "Data Aggregator" as P2
+participant "Snow Condition Collector" as P3
+participant "Weather Collector" as P4
+participant "Resort Info Collector" as P5
+participant "Geo Info Collector" as P6
+participant "onthesnow.com" as P7
+participant "openweathermap.org" as P8
+participant "rapidapi.com/ski-resorts-and-conditions" as P9
+participant "geo data source" as P10
+participant "info DB" as P11
+participant "cache repositories" as P12
+
+
+
+
+
+P2 -> P2 : set update timer
+
+
+P3 -> P3 : set update timer
+
+P4 -> P4 : set update timer
+P5 -> P5 : set update timer
+
+P6 -> P6 : set update timer
+
+
+
+P3 -> P3 : update timer expires
+P3 -> P8: GET rapidapi.com/ski-resorts-and-conditions
+P8 -> P3: data
+P3 -> P7: GET onthesnow.com
+P7 -> P3: data
+P3 -> P11: PUT  processed data
+
+P4 -> P4 : update timer expires
+P4 -> P11: GET elasticURL/resortIndex/_search
+P11 -> P4: data
+P4 -> P7: GET openweathermap.org (for the resort areas)
+P7 -> P4: data
+P4 -> P11: PUT  processed data
+
+
+P5 -> P5 : update timer expires
+P5 -> P8: GET rapidapi.com/ski-resorts-and-conditions
+P8 -> P5: data
+P5 -> P11: PUT  processed data
+
+
+
+P2 -> P2 : update timer expires
+P2 -> P11: GET elasticURL/resortIndex/_search
+P2 -> P11: GET elasticURL/geoIndex/_search
+P2 -> P11: GET elasticURL/weatherIndex/_search
+P2 -> P11: GET elasticURL/snowIndex/_search
+P2 -> P2: aggreagate and process data
+P2 -> P12: set data "GBL_ALL"
+P2 -> P12: set data "..."
+P2 -> P12: set data "RESORT_<resortId>"
+
+
+
+
+P6 -> P6 : update timer expires
+P6 -> P10: query geo info
+P10 -> P6: data
+P6 -> P11: PUT  processed data
+
+P1 -> P2: getHeatMapOverview()
+P2 -> P12: get data "GBL_ALL"
+P2 -> P1: data
+
+P1 -> P2: getResortInfo(resortId)
+P2 -> P12: get data "RESORT_<resortId>"
+P2 -> P1: data
+
+@enduml
+```
+
+
+
+
+
+
+
+
+
 
 # Ex - Adapters and Coupling
 

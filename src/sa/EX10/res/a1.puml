@@ -1,0 +1,96 @@
+## ADR #1
+
+1. What did you decide?
+
+How the components fetching data for the backend SKIP should be connected
+
+2. What was the context for your decision?
+
+We have different data sources that are processed to produce different types
+of data by collectors which is then aggregated. Ideally this would not be
+necessary but some collectors need to access data collected by other collectors.
+For instance the weather collector needs the list of resorts he needs
+to get the weather for.
+
+
+
+```puml
+@startuml
+
+component sources as S{
+component "Source 1" as S1
+component "Source 2" as S2
+component "Source 3" as S3
+component "Source n" as SN
+}
+
+
+component Collectors  as E{
+component "Collector Type 1" as E1
+component "Collector Type 2" as E2
+component "Collector Type m" as EM
+}
+
+component Aggregator as A
+
+A -> E
+E1 --> S1
+E1 --> S2
+
+E2 --> S1
+E2 --> S3
+
+EM -> SN
+EM -> S2
+
+E1 -> E2
+
+
+
+@enduml
+```
+
+
+
+
+
+
+3. What is the problem you are trying to solve?
+
+We want to avoid a potentially large processing time to be felt by users.
+
+We want the coupling between the various collectors to be as loose as possible.
+
+We want a flexible way to manipulate the ingested data.
+
+4.  Which alternative options did you consider?
+
+* Procedure Call
+* Bus
+* Shared DB
+
+
+5. Which one did you choose? 
+
+Shared DB
+
+6. What is the main reason for that?
+
+With a shared DB each collector is only coupled with the shape of the data he
+needs to work with and doesn't need to directly communicate with other components
+(with a procedure call we would have instead a very tigh coupling).
+Due to the loose coupling we can easily scale our collectors to use multiple
+sources and just need to provide appropiate adapters.
+
+A shared DB can support mutual dependencies between two collectors
+as the data will eventually converge with time. We also don't need to worry about
+potential cascading updates that could be caused by one collector updating its
+data (as would happen with a Bus).
+
+A shared DB can potentially support very expressive queries if needed by the
+collectors.
+
+A shared DB allows to store collectors to store history if needed.
+
+Data in a shared DB can be queried and analyzed outside of the application
+if needed by the developpers.
