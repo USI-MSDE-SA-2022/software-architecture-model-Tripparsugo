@@ -1,0 +1,27 @@
+@startuml
+component Mobile_App as APP {
+
+component "User Interface" as UI
+component "Local Storage" as LS
+}
+
+
+component "Skip API" as API
+APP --> API : web
+
+
+component "Service" as SERV1
+API -> SERV1: call
+
+
+component "User DB (mySql)" as DB1
+SERV1 -> DB1 : rpc
+
+component "Info db (elasticsearch)" as DB2
+SERV1 --> DB2 : web
+
+
+component "Data aggregator" as DT
+SERV1 --> DT : call
+
+@enduml
