@@ -1,0 +1,1257 @@
+<html>
+
+<head>
+    <title>Software Architecture Model</title>
+    <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Fira+Sans|Fira+Mono">
+    <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@10.2.0/build/styles/default.min.css">
+    <style>
+        body,
+        * {
+            font-family: "Fira Sans";
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 1em;
+        }
+
+        #usi-logo {
+            width: 75px;
+            height: 75px;
+        }
+
+        header {
+            display: flex;
+            align-content: space-between;
+            width: 100%;
+            justify-items: center;
+        }
+
+        header ul {
+            list-style: none;
+        }
+
+        header .title {
+            flex: 1;
+            margin-left: 1em;
+        }
+
+        html {
+            min-height: 100vh;
+        }
+
+        pre,
+        code {
+            font-family: "Fira Mono"
+        }
+
+        pre {
+            background: rgb(202, 227, 255);
+            padding: 1em;
+        }
+
+        td {
+            text-align: center
+        }
+
+        td:last-child {
+            text-align: left;
+        }
+
+        th {
+            font-weight: normal;
+            color: rgb(0, 61, 131);
+        }
+
+        thead {
+            border-bottom: 2px solid rgb(202, 227, 255);
+        }
+
+        table {
+            width: 100%
+        }
+
+        span.task {
+            display: inline-flex;
+            border-radius: 50%;
+            border: 1px solid white;
+            background: #ffbc00;
+            width: 2em;
+            height: 2em;
+            justify-content: center;
+            align-items: center;
+            font-weight: normal;
+            margin-top: 2em;
+        }
+
+        section.feedback {
+            padding: 2em;
+            background-color: rgb(92, 192, 223);
+            background-image: linear-gradient(1deg, white, transparent,rgba(255,255,255,0.5) 90%,transparent 100%);
+        }
+
+        section.instructions {
+            padding: 2em;
+            background-color: rgb(255, 241, 196);
+            background-image: linear-gradient(1deg, white, transparent,rgba(255,255,255,0.5) 90%,transparent 100%);
+        }
+
+        section.instructions::before {
+            content: "Task Description";
+            font-size: 1.75em;
+            color: #ffbc00;
+            font-weight: bold;
+            transform: translateY(-2em) rotate(1deg);
+            display: block;
+            margin-bottom: -2em;
+            text-align: center;
+        }
+
+        section.pass, section.exceed, section.ok {
+            margin-top: 1em;
+        }
+
+        section.pass span, section.exceed span, section.hint span, section.ok span {
+            margin-right: 0.5em;
+            padding: 0.5em;
+            display: inline-block;
+        }
+
+        section.pass {
+            border: 2px solid green;
+        }
+
+        section.ok {
+            border: 2px solid rgb(6, 175, 6);
+        }
+
+        section.exceed {
+            border: 2px solid rgb(34, 255, 34);
+        }
+
+        section.hint {
+            border: 2px solid rgb(255, 214, 34);
+        }
+
+        section.pass span {
+            background-color: green; color: white;
+            background-image: linear-gradient(45deg, #000000a6, transparent);
+        }
+
+        section.ok span {
+            background-color: rgb(6, 175, 6); color: white;
+            background-image: linear-gradient(135deg, #000000a6, transparent);
+        }
+
+        section.exceed span {
+            background-color: rgb(34, 255, 34); 
+            background-image: linear-gradient(-45deg, white, transparent);
+        }
+
+        section.hint span {
+            background-color: rgb(255, 214, 34);
+            background-image: linear-gradient(-45deg, white, transparent);
+        }
+
+        .deadline {
+            text-align: right;
+        }
+
+        p.deadline {
+            font-size: 2em;
+        }
+
+        .deadline b {
+            border-bottom: 1px solid black;
+        }
+
+        form label {
+            display: inline-block;
+            margin-right: 1em;
+            vertical-align: middle;
+        }
+
+
+form button {
+    min-width: 10em;
+    min-height: 2em;
+    background: #008d4f;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5em;
+}
+
+form input[type=text],
+form textarea,
+form select {
+    flex: 3;
+    margin: 0.5em;
+	font-size: 1.1em;
+}	
+
+form p { display: flex; 
+	align-items: stretch;
+    min-height: 2.5em;
+    padding-left: 0.5em; 
+flex-direction: column}
+
+    </style>
+</head>
+<body>
+
+    <header>    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" id="usi-logo" x="0px" y="0px" width="200" height="200" viewBox="0 0 200 200" style="enable-background:new 0 0 200 200;" xml:space="preserve" class="injected-svg svg">
+        <g>
+            <path d="M180,41.7h-51.1V31.1h42.2C153.1,12.5,127.8,1,99.9,1C45.2,1.1,0.9,45.4,1,100.1c0,26.8,10.7,51.1,28.1,68.9   c-1.4-2-2.4-4.1-3-6.1c-1-3.5-1-5.9-1.1-15.8v-47.1h14.8v48.5c0,3.4-0.1,6.6,1,9.6c3,7.6,11.3,8.5,16,8.5c2.3,0,8.3-0.1,12.6-3.9   c4.4-3.9,4.4-8.4,4.4-15v-47.7h14.9v49.7c-0.1,8.9-0.1,16.3-8.5,23.5c-8,7-18.4,7.7-23.8,7.7c-4.8,0-9.5-0.6-14-2.1   c-1.8-0.6-3.5-1.4-5-2.3c17.1,14,39,22.4,62.8,22.4c54.7-0.1,99-44.4,98.9-99.1C199,78.1,191.9,58,180,41.7z M175.3,94.4l-6.3-9   c2.1-1.4,8.7-5.7,8.7-17.7c0-2-0.2-4.1-1-6.2c-1.7-4.1-4.6-4.9-6.6-4.9c-3.6,0-4.9,2.5-5.7,4.3c-0.5,1.3-0.6,1.5-1.8,6.6l-1.5,6.9   c-0.9,3.6-1.3,5.4-2,7.2c-1.1,2.6-4.5,9.6-14,9.6c-10.9,0-17.8-9.2-17.8-22.6c0-12.3,6.1-19,11.6-23l6.6,8.8   c-2.8,1.9-8.5,5.7-8.5,14.8c0,5.8,2.6,10.8,7,10.8c4.9,0,5.8-5.3,6.8-10.5l1.3-5.9c1.6-7.7,4.8-18.6,17-18.6   c13.1,0,18.4,12.2,18.4,24.3c0,3.2-0.3,6.7-1.3,10.2C185.1,83.4,182.3,90.1,175.3,94.4z"></path>
+        </g>
+        </svg>
+        <div class="title">
+            <h2></h2>
+            <h1>Software Architecture Model</h1>
+        </div>
+        <ul>
+            <li>Prof. Cesare Pautasso</li>
+        </ul>
+        </header>
+
+    <main>
+        <h1 id="getting-started">Getting started</h1>
+<p>You will use <a href="https://www.markdownguide.org/cheat-sheetplan">Markdown</a> and <a href="https://plantuml.com/">PlantUML</a> to describe a software architecture model about your own project.</p>
+<p>This document will grow during the semester as you sketch and refine your software architecture model.</p>
+<p>When you are done with each task, please push so we can give you feedback about your work.</p>
+<p>We begin by selecting a suitable project domain.</p>
+<h1 id="ex---domain-selection"><span class='task'>1.</span>  Domain Selection</h1>
+<section class="instructions"><p>Submit the name and brief description (about 100 words) of your domain using the following vision statement template:</p>
+<pre><code>For [target customers]
+Who [need/opportunity/problem]
+The [name your project]
+Is  [type of project]
+That [major features, core benefits, compelling reason to buy]
+Unlike [current reality or competitors]
+Our Project [summarize main advantages over status quo, unique selling point]
+</code></pre>
+<p>Please indicate if your choice is:</p>
+<ul>
+<li>a project you have worked on in the past (by yourself or with a team)</li>
+<li>a project you are going to work on this semester in another lecture (which one?)</li>
+<li>a new project you plan to build in the future</li>
+<li>some existing open source project you are interested to contribute to</li>
+</ul>
+<p>The chosen domain should be unique for each student.</p>
+<p>Please be ready to give a 2 minute presentation about it (you can use a slide but it&#39;s not necessary)</p>
+<section class="hint"><span>Hint: </span>to choose a meaningful project look at the rest of the modeling tasks which you are going to perform in the context of your domain.</section></section><p>Project Name: <em>My Project</em></p>
+<p>Project Type:</p>
+<p>Vision Statement:</p>
+<p>Additional Information:</p>
+<p>#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</p>
+<p>For skiers
+Who are deciding where to spend their day
+The Skip app
+Is  an application for mobile devices
+That allows skiers upload and visualize information ubout the current state of the slopes.
+Unlike companies that manage the slopes Skip provides its users with unbiased information on the state of the snow.
+There are websites that host reviews of ski resorts  but those are permanent reviews and likely not based on the present snow conditions.
+Skiers may also use forums to monitor the snow conditions (ex: <a href="https://www.skiforum.it/board/index.php?threads/55613/page-1966">https://www.skiforum.it/board/index.php?threads/55613/page-1966</a>) but this
+requires the user to sift trhough multiple messages in the hopes of finding the information he needs
+Our Project provides information and up to date data on the ski resorts close to the user at a glance.
+This information is provided by users through a quick submission designed to be compiled in less than 30s.
+Reviews by users are weighted based on how recent they are and expire after a while so that the information on the slopes is always up to date.</p>
+<h1 id="ex---architectural-decision-records"><span class='task'>2.</span>  Architectural Decision Records</h1>
+<section class="instructions"><p>Software architecture is about making design decisions that will impact the quality of the software you plan to build.</p>
+<p>Let&#39;s practice how to describe an architectural decision. We will keep using ADRs to document architectural decisions in the rest of the model.</p>
+<p>Use the following template to capture one or more architectural design decisions in the context of your project domain</p>
+<section class="pass"><span>&starf;&star;&star;: </span>1 ADR</section><section class="ok"><span>&starf;&starf;&star;: </span>2 ADR</section><section class="exceed"><span>&starf;&starf;&starf;: </span>&gt;2 ADR</section></section><p><h3>Architectural Decision Record Template</h3><h2 id="adr-0-template">ADR #0 (Template)</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>Give a short title of solved problem and solution</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>What is the goal you are trying to achieve?</p>
+<p>What are the constraints?</p>
+<p>What is the scope of your decision? Does it affect the entire architecture?</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>You may want to articulate the problem in form of a question.</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<p>List at least 3 options</p>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>Pick one of the options as the outcome of your decision</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>List the positive consequences (pros) of your decision:</p>
+<ul>
+<li>quality improvement</li>
+<li>satisfaction of external constraint</li>
+</ul>
+<p>If any, list the negative consequences (cons)</p>
+<ul>
+<li>quality degradation</li>
+</ul>
+</p>
+<h1 id="ex---quality-attribute-scenario"><span class='task'>3.</span>  Quality Attribute Scenario</h1>
+<section class="instructions"><ol>
+<li><p>Pick a scenario for a specific quality attribute. Describe it with natural language.</p>
+</li>
+<li><p>Refine the scenario using the following structure:</p>
+</li>
+</ol>
+<img src="./puml_e16.svg"><p><em>Stimulus</em>: condition affecting the system</p>
+<p><em>Source</em>: entity generating the stimulus</p>
+<p><em>Environment</em>: context under which stimulus occurred (e.g., build, test, deployment, startup, normal operation, overload, failure, attack, change)</p>
+<p><em>Response</em>: observable result of the stimulus</p>
+<p><em>Measure</em>: benchmark or target value defining a successful response</p>
+<section class="pass"><span>&starf;&star;&star;: </span>3 scenarios</section><section class="ok"><span>&starf;&starf;&star;: </span>&gt;3 scenarios</section><section class="exceed"><span>&starf;&starf;&starf;: </span>&gt;6 scenarios using challenging qualities</section></section><h2 id="example-scenario">Example Scenario</h2>
+<p>Quality: <em>Recoverability</em></p>
+<p>Scenario: In case of power failure, rebooting the system should take up to 20 seconds.</p>
+<img src="./puml_e17.svg"><p>#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</p>
+<h2 id="adr-1">ADR #1</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>Which platform should Skip run on.</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>We want to guarantee Skip users a good compromise of usability and utility at a
+reasonable development cost.</p>
+<p>The application should be as immediate as possible to access and push users to
+give updates on the conditions of the slopes.</p>
+<p>Another important factor to keep in mind is the &#39;effort&#39; that would be required
+from the users part to start using the application for instance using a web app
+doesn&#39;t require any installations.</p>
+<p>This is a key decision that affects the marketing and design architecture of
+the whole software:</p>
+<ul>
+<li><p>From a coding perspective programming languages available across platforms
+are not the same. We also need to keep in mind that available computing power
+vastly differs platform to platform</p>
+</li>
+<li><p>Best UI practices vastly differs on different platforms for instance a phone
+has a smaller screen size and ratio compared to a desktop PC</p>
+</li>
+<li><p>There are revenue consequences based on these decisions, for instance mobile
+app stores will take a portion of our profits but at the same time offer a more
+ample access to the marketing</p>
+</li>
+</ul>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>What&#39;s the best way for users to access our service?</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>Web app</li>
+<li>Mobile app</li>
+<li>Desktop</li>
+<li>Mobile + Desktop</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>Mobile</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>Users need an interface to quickly access the applicable features and give updates
+on the condition of the snow while on the slopes. Given most users will go skiing
+with their smartphones rather than their computers we need to make the app available
+on them. We can do so either via web app or mobile application, web apps tend to
+be hard to use while on the snow so we need at least mobile app.</p>
+<p>The application doesn&#39;t feature complex user interactions that would justify
+the need of a desktop version. We also need to consider that a user from a Desktop
+might use the app to evaluate the condition of the slopes but likely won&#39;t come
+back home to open it again to provide feedback on their conditions which is something
+our application needs.</p>
+<p>PROS:</p>
+<ul>
+<li>not developing also a Desktop app saves component</li>
+<li>the app store gives a large market access on the fly</li>
+<li>the application will be easily accessible while skiing</li>
+<li>it&#39;s easier to have a good design on a mobile app rather than a web apps</li>
+</ul>
+<p>CONS:</p>
+<ul>
+<li>revenue cut by app stores</li>
+<li>users without a smartphone won&#39;t be able to access the application</li>
+<li>more effort required from the users part to start using the application compared
+to a web app</li>
+<li>more expensive to develop a web app compared to a mobile one</li>
+</ul>
+<h2 id="adr-2">ADR #2</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>Which mobile OS should the application run on?</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>We want our application to be accessible to the largest possible amount of users.
+We need to consider that developing an app on multiple OS has a considerable impact
+on developing costs.
+Different technologies are available on different OS so this choice will impact
+our code.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>How can we make the application available to a large portion of our potential
+users without a heavy impact on its usability and development costs?</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>Android</li>
+<li>IoS</li>
+<li>X-platform</li>
+<li>(Android &amp; IoS) native</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>X-platform</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>Excluding on of the OS would cut out a significant portion of our users as currently
+the split between Android/Apple devices is roughly 7:3.
+A x-platform solution allows to access both markets while at the same time
+not bloating maintenance and development costs.
+The tradeoff is in usability.</p>
+<p>PROS:</p>
+<ul>
+<li>access to nearly all potential users</li>
+<li>less expensive compared to a native solution</li>
+</ul>
+<p>CONS:</p>
+<ul>
+<li>more expensive compared to a single OS solution</li>
+<li>no access to native OS specific features</li>
+</ul>
+<h2 id="adr-3">ADR #3</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>Which framework to use to implement the X-platform app.</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>Developing the application with a feature rich and reliable framework will
+reduce costs and deliver a better product.</p>
+<p>Programmers need to be able to work with the framework thus either they are
+already comfortable with it or they will need to learn how to use it.</p>
+<p>This decision has an impact on the code design.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>How can we make our app as easy to implement as possible?</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>React native</li>
+<li>Flutter</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>Not enough information to pick one yet. Further options need to be explored.</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>//</p>
+<h2 id="adr-4">ADR #4</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>How we should gain money from the application</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>We need to make a profit from our application.</p>
+<p>We need to consider that certain solution will impact the amount of users of the
+application (ex: making the app paid) or impact the usability (ex: aggressive ads)</p>
+<p>This decision is a marketing one but might slightly impact UI design and code if
+we want to add ads to the application. For donations we will need to implement
+a secure way to send them code-wise.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>How can we profit from the application?</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>paid application</li>
+<li>free application with ads</li>
+<li>free application with donations</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>free application with ads</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>An application can only be paid if it offers a service indispensable for the
+user while at the same time being by far the best
+product available on the market (ex: photoshop).
+Users will be very shy to download a paid app on the a mobile store in part given
+the fierce competition on it.
+That being said making the app paid would surely reduce the amount of users
+in turn reducing the amount of snow updates we get from them.</p>
+<p>At the cost of some usability ads can provide a steady flow of revenue without
+the big barrier on the download an initial payment would be. We could also
+consider the option to remove ads with a payment.</p>
+<p>Donations don&#39;t impact the usability of the app but likely don&#39;t provide enough
+revenue. More research would be needed on this topic to confirm it as there seem
+to be conflicting opinions on the topic.</p>
+<p>PROS:</p>
+<ul>
+<li>steady flow of revenue</li>
+<li>no download barrier</li>
+</ul>
+<p>CONS:</p>
+<ul>
+<li>usability tradeoff</li>
+<li>need to change UI to fit ads</li>
+</ul>
+<h2 id="adr-5">ADR #5</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>How to incentivise users to give snow updates</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>We want users to provide as much updates on the condition of the snow as possible
+to offer consistent and up to date reports.</p>
+<p>We can&#39;t make the feedback too long or invasive or users won&#39;t compile it.</p>
+<p>The incentives can&#39;t heavily impact the profits of our application.</p>
+<p>This is a marketing decision with a minor impact on the code of the application
+albeit way to give incentives will have to be implemented.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>Users might not provide updates if they don&#39;t feel they gain something from it.
+At the same time an incentive perceived as too large might prompt them to
+leave fake updates</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>no incentives</li>
+<li>small payment</li>
+<li>lottery</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>lottery</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>By providing no incentives it would be up to the user&#39;s goodwill to leave updates
+which might still happen (reviews exist even if no one gets paid for them).</p>
+<p>We could issue small payment to users for their updates but these payments would
+be so small in order to still manage to make a profit off the app that users might
+perceive them as a &#39;job&#39; they are not getting paid enough to do.</p>
+<p>A lottery of ski related items might be the best options since it doesn&#39;t cost
+much compared to the perceived value from the user&#39;s part and might also introduce
+the fun factor.</p>
+<p>PROS:</p>
+<ul>
+<li>incentive for the users</li>
+</ul>
+<p>CONS:</p>
+<ul>
+<li>lotteries have to abide legal regulations</li>
+<li>lottery still impacts operating costs albeit in a minor way</li>
+<li>it might incentivise users to leave fake updates. A countermeasure needs to be
+designed.</li>
+</ul>
+<h1 id="ex---quality-attribute-tradeoff"><span class='task'>4.</span>  Quality Attribute Tradeoff</h1>
+<section class="instructions"><p>Pick a free combination of two qualities on the <a href="https://usi365.sharepoint.com/:x:/s/MSDE-2022-SoftwareArchitecture/ESVksoXVgMNHtKBKrIwatMYBqorOFaKjxnoqssEy0gNPCg?e=81W7SI">map</a> and write your name to claim it.</p>
+<p>Then write a short text giving an example for the tradeoff in this assignment.</p>
+<section class="pass"><span>&starf;&star;&star;: </span>1 unique trade-off</section><section class="ok"><span>&starf;&starf;&star;: </span>2 trade-offs</section><section class="exceed"><span>&starf;&starf;&starf;: </span>&gt;2 trade-offs</section></section><p>#:</p>
+<h2 id="example-scenario-1">Example Scenario 1</h2>
+<p>Quality: <em>Affordability</em> , <em>Portability</em> , <em>Deployability</em></p>
+<p>Scenario: The code written for the application is compatible with both Android
+and IoS  with none or relatively trivial changes costing little effort,
+time and money to be deployed on both OS at the same time once the code is written.</p>
+<img src="./puml_e18.svg"><h2 id="example-scenario-2">Example Scenario 2</h2>
+<p>Quality: <em>Interoperability</em> , <em>Usability</em></p>
+<p>Scenario: The software should be able to fetch data from multiple weather APIs
+in order to provide users with reliable data over a vast amount of locations.
+The fetching and elaboration of this data to a usable summary should be done
+server side for efficiency and speed.
+ Our server should act as an adaptor over the whole data for the application.</p>
+<img src="./puml_e19.svg"><h2 id="example-scenario-3">Example Scenario 3</h2>
+<p>Quality: <em>Usability</em> , <em>Performance</em></p>
+<p>Scenario: The survey the user completes to provide the us with updates on
+snow conditions should on average take less than 30s to complete.</p>
+<img src="./puml_e20.svg"><h2 id="example-scenario-4">Example Scenario 4</h2>
+<p>Quality: ? maybe it&#39;s functional ?</p>
+<p>Scenario: The application should be able to store a snow update in case of
+poor connection (as often is on the slopes) for at least a few hours and send
+the data later to our server without having the user compile another snow update.</p>
+<img src="./puml_e21.svg"><h2 id="example-scenario-5">Example Scenario 5</h2>
+<p>Quality: <em>Availability</em></p>
+<p>Scenario: The application should have an uptime of at least 99.5% for weather
+and slope info assuming a connection is available.</p>
+<img src="./puml_e22.svg"><h2 id="example-scenario-6">Example Scenario 6</h2>
+<p>Quality: <em>Deployability</em> , <em>Maintainability</em></p>
+<p>Scenario: The whole software (app + server) should have a test coverage of
+at least 95% when deployed and for its whole lifecycle.</p>
+<p>Without said requirement an automatic pipeline should fail the deployment.</p>
+<img src="./puml_e23.svg"><h2 id="example-scenario-7">Example Scenario 7</h2>
+<p>Quality: <em>Visibility</em> , <em>Maintainability</em> , <em>Privacy</em></p>
+<p>Scenario: When the service of the App is not available the application should
+show the user a clear message stating the reason. If the reason is a fault in
+the software a log should be sent to the developer not containing sensible user
+data.</p>
+<img src="./puml_e24.svg"><h1 id="ex---feature-modeling"><span class='task'>5.</span>  Feature Modeling</h1>
+<section class="instructions"><p>In the context of your chosen project domain, describe your domain using a feature model.</p>
+<p>The feature model should be correctly visualized using the following template:</p>
+<p><img src="./puml_15.svg" alt="Example Feature Model Diagram"></p>
+<p>If possible, make use of all modeling constructs.</p>
+<section class="pass"><span>&starf;&star;&star;: </span>Include at least 4 non-trivial features</section><section class="ok"><span>&starf;&starf;&star;: </span>Include at least 6 non-trivial features, which are all implemented by your project</section><section class="exceed"><span>&starf;&starf;&starf;: </span>Include more than 8 non-trivial features, indicate which are found in your project and which belong to one competitor</section></section><p>#:::::::::::::</p>
+<img src="./puml_e25.svg"><h1 id="ex---context-diagram"><span class='task'>6.</span>  Context Diagram</h1>
+<section class="instructions"><p>Prepare a context diagram to define the design boundary for your project.</p>
+<p>Here is a PlantUML/C4 example to get started.</p>
+<p><img src="./puml_16.svg" alt="Example Context Diagram"></p>
+<p>Make sure to include all possible user personas and external dependencies you may need.</p>
+<section class="pass"><span>&starf;&star;&star;: </span>1 User and 1 Dependency</section><section class="ok"><span>&starf;&starf;&star;: </span>&gt;1 User and &gt;1 Dependency</section><section class="exceed"><span>&starf;&starf;&starf;: </span>&gt;1 User and &gt;1 Dependency, with both incoming and outgoing dependencies</section></section><img src="./puml_e26.svg"><h1 id="ex---component-model-top-down"><span class='task'>7.</span>  Component Model: Top-Down</h1>
+<section class="instructions"><p>Within the context of your project domain, represent a model of your modular software architecture decomposed into components.</p>
+<p>The number of components in your logical view should be between 6 and 9:</p>
+<ul>
+<li>At least one component should be further decomposed into sub components</li>
+<li>At least one component should already exist. You should plan how to reuse it, by locating it in some software repository and including in your model the exact link to its specification and its price.</li>
+<li>At least one component should be stateful.</li>
+</ul>
+<p>The logical view should represent provide/require dependencies that are consistent with the interactions represented in the process view.</p>
+<p>The process view should illustrate how the proposed decomposition is used to satisfy the main use case given by your domain model.</p>
+<p>You can add additional process views showing how other use cases can be satisfied by the same set of components.</p>
+<p>This assignment will focus on modularity-related decisions, we will worry about deployment and the container view later.</p>
+<p>Here is a PlantUML example logical view and process view.</p>
+<img src="./puml_e27.svg"><img src="./puml_e28.svg"><section class="hint"><span>Hint: </span>How to connect sub-components to other external components? Use this pattern.</section><img src="./puml_e29.svg"><section class="pass"><span>&starf;&star;&star;: </span>6 components (1 decomposed), 1 use case/process view</section><section class="ok"><span>&starf;&starf;&star;: </span>6 components (1 decomposed), 2 use case/process view</section><section class="exceed"><span>&starf;&starf;&starf;: </span>&gt;6 components (&gt;1 decomposed) and &gt;2 use case/process view</section></section><p>#:</p>
+<h2 id="logical-view">Logical View</h2>
+<img src="./puml_e30.svg"><h2 id="process-views">Process Views</h2>
+<img src="./puml_e31.svg"><img src="./puml_e32.svg"><img src="./puml_e33.svg"><pre><code>&quot;Data aggregator&quot; and &quot;External API&quot; sub-components are not connected.
+</code></pre>
+<h1 id="ex---component-model-bottom-up"><span class='task'>8.</span>  Component Model: Bottom-Up</h1>
+<section class="instructions"><p>Within the context of your project domain, represent a model of your modular software architecture decomposed into components.</p>
+<p>To design this model you should attempt to buy and reuse as many components as possible.</p>
+<p>In addition to the logical and process views, you should give a precise list to all sources and prices of the components you have selected to be reused.</p>
+<p>Write an ADR to document your component selection process (indicating which alternatives were considered).</p>
+<section class="pass"><span>&starf;&star;&star;: </span>Existing design with at least 1 reused components (1 Logical View, 1 Process View)</section><section class="ok"><span>&starf;&starf;&star;: </span>Existing design with at least 3 reused components (1 Logical View, 1 Process View, 1 ADR)</section><section class="exceed"><span>&starf;&starf;&starf;: </span>Redesign based on &gt;3 reused components (1 Logical View, &gt;1 Process View, &gt;1 ADR)</section></section><img src="./puml_e34.svg"><p>|</p>
+<img src="./puml_e35.svg"><p>|</p>
+<img src="./puml_e36.svg"><h2 id="adr-1-1">ADR #1</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>What language and framework should the app use for the backend?</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>The choice of  language that can scale well to write medium to large sized applications
+and a well maintaned and usable framework will make the application more
+maintainable, increase reliability (less bugs) and likely reduce our time to market
+so it&#39;s a key decision.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>Writing programs is hard with the wrong technology so we want to pick the proper one.</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>Java + Spring</li>
+<li>Kotlin + Spring</li>
+<li>Kotlin + Ktor</li>
+<li>JS + Express</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>Kotlin + Spring</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>JS is very bug prone and while being a very quick solution for small scale applications
+it doesn&#39;t scale well beyond that.</p>
+<p>Java has consinstently proven itself to be a good language to develop sstable
+backend and Spring is also a well tested framework in that regard.</p>
+<p>While certainly being a solid language Java starts to show signs of its age and
+due to retrocompatibility concerns it never solved some of its core issues (ex: null management)</p>
+<p>Kotlin offers a more modern approach to OOP and is completely Interoperable with Java so
+the transition to it shouldn&#39;t be traumatic for most programmers.</p>
+<p>Ktor is a more modern framework but on the other hand it doesn&#39;t have the same amount
+of material on it as we can find about Spring nor it&#39;s as easy to find people with
+knowledge about it.</p>
+<p>PROS:</p>
+<ul>
+<li>Kotlin is a statically typed language which will reduce the potential for bugs compared to JS</li>
+<li>Kotlin solves key issues of Java such as excessive verbosity and null management</li>
+<li>Spring is a well tested framework with lots of material on its usage</li>
+</ul>
+<p>CONS:</p>
+<ul>
+<li>Developing a backend in Kotlin might be slower than JS</li>
+<li>Ktor is a more modern and less verbose framework</li>
+<li>Some programmers might initially be confused about some Kotlin features</li>
+</ul>
+<p>PRICINGS:</p>
+<p>Every software is free beside hardware costs. Using the following external APIs:</p>
+<ul>
+<li><a href="https://rapidapi.com/random-shapes-random-shapes-default/api/ski-resorts-and-conditions/">https://rapidapi.com/random-shapes-random-shapes-default/api/ski-resorts-and-conditions/</a></li>
+</ul>
+<p>Subscription plan for 1k requests/day available for 10USD then 10USD/1k requests.</p>
+<ul>
+<li><p><a href="https://openweathermap.org/api">https://openweathermap.org/api</a>
+Free up until 1k requests/day then 10USD/1k requests.</p>
+</li>
+<li><p><a href="http://docs.clientservice.onthesnow.com/docs/getting_started.html">http://docs.clientservice.onthesnow.com/docs/getting_started.html</a></p>
+</li>
+</ul>
+<p>Free</p>
+<h1 id="ex---interfaceapi-specification"><span class='task'>9.</span>  Interface/API Specification</h1>
+<section class="instructions"><p>In this iteration, we will detail your previous model to specify the provided interface of all components based on their interactions found in your existing process views.</p>
+<ol>
+<li><p>choose whether to use the top down or bottom up model. If you specify the interfaces of the bottom up model, your interface descriptions should match what the components you reuse already offer.</p>
+</li>
+<li><p>decide which interface elements are operations, properties, or events.</p>
+</li>
+</ol>
+<p>Get started with one of these PlantUML templates, or you can come up with your own notation to describe the interfaces, as long as it includes all the necessary details.</p>
+<p>The first template describes separately the provided/required interfaces of each component.</p>
+<p><img src="./puml_17.svg" alt="Separate Required/Provided Interfaces"></p>
+<p>The second template annotates the logical view with the interface descriptions: less redundant, but needs the logical dependencies to be modeled to show which are the required interfaces.</p>
+<p><img src="./puml_18.svg" alt="Shared Interfaces"></p>
+<section class="pass"><span>&starf;&star;&star;: </span>define interfaces of all outer-level components</section><section class="ok"><span>&starf;&starf;&star;: </span>Define interfaces of all outer-level components. Does your architecture publish a Web API? If not, extend it so that it does.</section><section class="exceed"><span>&starf;&starf;&starf;: </span>Also, document the Web API using the OpenAPI language. You can use the <a href="http://api-ace.inf.usi.ch/openapi-to-tree/">OpenAPI-to-Tree</a> tool to visualize the structure of your OpenAPI description.</section></section><img src="./puml_e37.svg"><h1 id="ex---connector-view"><span class='task'>10.</span>  Connector View</h1>
+<section class="instructions"><p>Extend your existing models introducing the connector view</p>
+<p>For every pair of connected components (logical view), pick the most suitable connector. Existing components can play the role of connector, or new connectors may need to be introduced.</p>
+<p>Make sure that the interactions shown in the process views reflect the primitives of the selected connector</p>
+<section class="pass"><span>&starf;&star;&star;: </span>model existing connectors based on previous model decisions</section><section class="ok"><span>&starf;&starf;&star;: </span>model existing connectors based on previous model decisions, write an ADR about the choice of one connector</section><section class="exceed"><span>&starf;&starf;&starf;: </span>introduce a new type of connector and update your existing process view
+(sequence diagram) to show the connector primitives in action</section></section><p>We have split the connector view in two sections:</p>
+<p>Here is up to the &quot;Data Aggregator&quot; component</p>
+<img src="./puml_e38.svg"><p>Here&#39;s the Data aggregator section:</p>
+<img src="./puml_e39.svg"><p>For the &quot;Data aggregator&quot; we are using a shared DB connector as explained with the
+following ADR:</p>
+<h2 id="adr">ADR</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>How the components fetching data for the backend SKIP should be connected</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>We have different data sources that are processed to produce different types
+of data by collectors which is then aggregated. Ideally this would not be
+necessary but some collectors need to access data collected by other collectors.
+For instance the weather collector needs the list of resorts he needs
+to get the weather for.
+Below a graph representing the situation:</p>
+<img src="./puml_e40.svg"><ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>We want to avoid a potentially large processing time to be felt by users.</p>
+<p>We want the coupling between the various collectors to be as loose as possible.</p>
+<p>We want a flexible way to manipulate the ingested data.</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>Procedure Call</li>
+<li>Bus</li>
+<li>Shared DB</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>Shared DB</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>With a shared DB each collector is only coupled with the shape of the data he
+needs to work with and doesn&#39;t need to directly communicate with other components
+(with a procedure call we would have instead a very tigh coupling).
+Due to the loose coupling we can easily scale our collectors to use multiple
+sources and just need to provide appropiate adapters.</p>
+<p>A shared DB can support mutual dependencies between two collectors
+as the data will eventually converge with time. We also don&#39;t need to worry about
+potential cascading updates that could be caused by one collector updating its
+data (as would happen with a Bus).</p>
+<p>A shared DB can potentially support very expressive queries if needed by the
+collectors.</p>
+<p>A shared DB allows to store collectors to store history if needed.</p>
+<p>Data in a shared DB can be queried and analyzed outside of the application
+if needed by the developpers.</p>
+<p>With the newly adopted connector we have turned the aggregation and collection
+of data into an active task to avoid the user having to wait for it.</p>
+<p>This comes at the cost of more processing and calls required for potentially
+unneeded data but we believe it to be worth the tradeoff.</p>
+<p>The following process view shows the work behind a call to the API, as we cant
+observe updates happen independently:</p>
+<img src="./puml_e41.svg"><h1 id="ex---adapters-and-coupling"><span class='task'>11.</span>  Adapters and Coupling</h1>
+<section class="instructions"><ol>
+<li>Highlight the connectors (or components) in your existing bottom-up design playing the role of adapter. (We suggest to use the bottom-up design since when dealing with externally sourced components, their interfaces can be a source of mismatches).</li>
+<li>Which kind of mismatch** are they solving?</li>
+<li>Introduce a wrapper in your architecture to hide one of the previously highlighted adapters</li>
+<li>Where would standard interfaces play a role in your architecture? Which standards could be relevant in your domain?</li>
+<li>Explain how one or more pairs of components are coupled according to different coupling facets</li>
+<li>Provide more details on how each adapter solves the mismatches identified using pseudo-code or the actual code</li>
+<li>How can you improve your architectural model to minimize coupling between components? (Include a revised logical/connector view with your solution)</li>
+</ol>
+<section class="pass"><span>&starf;&star;&star;: </span>1-5 (with one adapter)</section><section class="ok"><span>&starf;&starf;&star;: </span>1-6 (with at least two adapters)</section><section class="exceed"><span>&starf;&starf;&starf;: </span>1-7 (with at least two adapters)</section><p>** If you do not find any mismatch in your existing design we suggest to introduce one artificially.</p>
+<h2 id="hints">Hints</h2>
+<ul>
+<li><p>(1) Should we find cases where two components cannot communicate (and are doing it wrongly) and highlight they would need an adapter?, or cases where we have already a &quot;component playing the role of adapter in the view&quot; and highlight only the adapter?</p>
+<p><em>Both are fine. We assumed that if you draw a dependency (or a connector) the interfaces match, but if you detect that the components that should communicate cannot communicate then of course introduce an adapter to solve the mismatch</em></p>
+</li>
+<li><p>(2) Please show the details about the two interfaces which do not match (e.g., names of parameters, object structures) so that it becomes clear why an adapter is needed and what the adapter should do to bridge the mismatch</p>
+</li>
+<li><p>(5-6) These questions are about the implications on coupling based on the decisions you documented in the connector view.
+Whenever you have a connector you couple together the components and different connectors will have different forms of coupling</p>
+<p>For example, if you use calls everywhere, do you really need them everywhere? is there some pair of components where you could use a message queue instead?</p>
+<p>Regarding the coupling facets mentioned in question 5. You do not have to answer all questions related to &quot;discovery&quot;, &quot;session&quot;, &quot;binding&quot;, &quot;interaction&quot;, &quot;timing&quot;, &quot;interface&quot; and &quot;platform&quot; (p.441, Coupling Facets). Just the ones that you think are relevant for your design and by answering them you can get ideas on how to do question 6.</p>
+</li>
+</ul>
+</section><h1 id="1-2">1-2</h1>
+<p>In this project we are using both adapters implemented by us and others
+externally sourced.</p>
+<p>The most prominent mimatch we find in our project is derived by the fact that
+we are collecting data from different sources and have to reshape it for our
+needs. Despite the components not communicating directly as they use a
+shared database connector they still serve the role of adapting data, if not
+through their interface by the way they ingest it in the shared database.</p>
+<p>Each combination of data type and source needs its own adapter with
+knowledge on how to retrive it and reshape it.</p>
+<p>The following view (from ex10):</p>
+<img src="./puml_e42.svg"><p>becomes with adapters:</p>
+<img src="./puml_e43.svg"><p>We have omitted the shared database to better show the role of the connectors.
+Adding it in we have the following:</p>
+<img src="./puml_e44.svg"><p>The <code>DataAggregator</code> component is another adapter which queries the database and
+converts the ingested data into a shape closer to what the client needs. For instance
+an heatmap view (based on a specific criteria such as reviews, weather, affluency...)
+or information about a specific resort. Clearly we can&#39;t expect the client
+to analyze our database to extract the data he needs thus somewhere this missmatch
+must be solved and the DataAggregator is the component serving that purpose.</p>
+<p>Our &quot;Redux Actions&quot; component in the mobile application is an adapter masking
+resquests to APIs and local storage and in general handling UI requests. A method
+of its interface could for instance be</p>
+<pre><code>dispatchShowHeatMapOverview()
+</code></pre>
+<p>which would fetch the required data through our Skip API and dispatch an action
+to update our redux store accordingly. More than solving a missmatch it seperates
+the concern of having to deal with HTTP requests and actions on the local storage
+from the UI.</p>
+<p>Our <code>Service</code> component in the backend is an adapter tasked with using the various
+databases and the DataAggregator component to provide actions close to what
+our controller needs. For instance if the API is requested to handle a new
+update on the snow conditions by one of our users the controller
+will simply make a call along the lines of:</p>
+<pre><code>service.addSnowUpdate(snowInfo)
+</code></pre>
+<p>once validated the user credentials. Again more than solving a missmatch this component
+separates concerns according to the ModelViewController pattern providing a simplified
+interface for the controller to access (thus being a <code>facade</code>).</p>
+<p>Other examples of adapters are the ones implemented by the libraries we use to
+connect with our database both on the front and backend. Different databases have
+different interfaces and, if possible, we don&#39;t want to deal with them directly.
+Our service layer should not change whether we use Postgress, MySql or SQLite.</p>
+<h1 id="3">3</h1>
+<p>The backend <code>Service</code> component can be considered a wrapper around the business
+logic of our backend since the controller doesn&#39;t have to be aware of any components
+used by it.</p>
+<p>A view of it as follows:</p>
+<img src="./puml_e45.svg"><p>wouldn&#39;t be entirely accurate since the databases runs independently. We can&#39;t
+represent them as part of the service but the controller is not aware of that...</p>
+<p>In general every API could be considered as a wrapping facade since it adapts functionality
+we don&#39;t see the implementation of to an interface.</p>
+<h1 id="4">4</h1>
+<h2 id="http">HTTP</h2>
+<p>We are implementing a REST API for our application  and are also using
+externally sourced APIs which will have to conform to HTTP specifications.</p>
+<h2 id="sql">SQL</h2>
+<p>We are using a SQL database to store data about our users. SQL is one of the
+most used DSL for queries.</p>
+<h2 id="geojson">GeoJson</h2>
+<p>We will need to work with geographic data and GeoJson is the most common data
+model used for it.</p>
+<h1 id="5">5</h1>
+<p>We are looking at the facets of the following coupling:</p>
+<img src="./puml_e46.svg"><h2 id="binding">Binding</h2>
+<p>Binding between the two components is done at design-time. The mobile application
+works by communicating with a back-end we design.</p>
+<h2 id="discovery">Discovery</h2>
+<p>Discovery happens at deployment time likely in the form of an environment
+variable with the url and credentials to access our API.</p>
+<h2 id="session">Session</h2>
+<p>The backend API will conform to the REST specification (with a possible exception
+made to manage authorization tokens which might expire for security reasons after
+some time) so each message will be treated independently from each other.</p>
+<h2 id="interaction">Interaction</h2>
+<p>The components are connected via a <code>web</code> connector so the connetion is
+obviously remote.</p>
+<h2 id="timing">Timing</h2>
+<p>Both components must be running in order to exchange data.</p>
+<h2 id="interface">Interface</h2>
+<p>Any change in the API will potentially break the mobile app.</p>
+<h2 id="platform">Platform</h2>
+<p>No. The backend is running remotely so, as long as there are no interface changes,
+the mobile app won&#39;t be aware of a platform change.</p>
+<h1 id="6">6</h1>
+<p>As mentioned before we need multiple adapters for the various sources of data
+since each API will have its own data model.</p>
+<p>For instance let&#39;s say we need the weather of a location:</p>
+<p>A request to <code>openweathermap</code> will look as follows:</p>
+<pre><code>https://api.openweathermap.org/data/2.5/weather?q=Cortina,ita&amp;appid={API key}
+</code></pre>
+<p>and will result in a response that looks like</p>
+<pre><code>{
+&quot;coord&quot;: {
+  &quot;lon&quot;: -0.13,
+  &quot;lat&quot;: 51.51
+},
+&quot;weather&quot;: [
+  {
+    &quot;id&quot;: 300,
+    &quot;main&quot;: &quot;Drizzle&quot;,
+    temp&quot;: 282.55,
+    &quot;feels_like&quot;: 281.86,
+    &quot;temp_min&quot;: 280.37,
+    &quot;temp_max&quot;: 284.26,
+    &quot;pressure&quot;: 1023,
+    &quot;humidity&quot;: 100
+    &quot;description&quot;: &quot;light intensity drizzle&quot;,
+    &quot;icon&quot;: &quot;09d&quot;
+  }
+],
+...
+&quot;wind&quot;: {
+  &quot;speed&quot;: 4.1,
+  &quot;deg&quot;: 80
+},
+&quot;clouds&quot;: {
+  &quot;all&quot;: 90
+},
+...
+&quot;id&quot;: 2643743,
+&quot;name&quot;: &quot;Cortina&quot;,
+&quot;cod&quot;: 200
+}
+</code></pre>
+<p>while a request to <code>onthesnow</code> will be as follows:</p>
+<pre><code>https://onthesnow.com/externalservice/resort/{resortId}/{N}/day/forecast
+</code></pre>
+<p>and will result in a response that looks like:</p>
+<pre><code>{
+  ...
+currentWeather&quot;: {
+    &quot;snowfall&quot;: 0,
+    &quot;is_reported&quot;: true,
+    &quot;is_forecast&quot;: false,
+    &quot;tempTopMax&quot;: -10,
+    &quot;tempTopMin&quot;: -10.9,
+    &quot;tempBottomMax&quot;: -3.6,
+    &quot;tempBottomMin&quot;: -4.6,
+    &quot;tempTop&quot;: -6.7,
+    &quot;tempBottom&quot;: -6.7,
+    &quot;weatherSymbol&quot;: &quot;SUN&quot;,
+    &quot;bottomWeatherSymbol&quot;: &quot;SUN&quot;,
+    &quot;surfaceTop&quot;: 2,
+    &quot;surfaceBottom&quot;: 2,
+    &quot;surfaceTopOffSlope&quot;: 0,
+    &quot;surfaceBottomOffSlope&quot;: 0,
+    &quot;forecastDate&quot;: &quot;2014-02-24&quot;,
+    &quot;lastModified&quot;: 1393225236,
+    &quot;date&quot;: 1393200000,
+    &quot;date_str&quot;: &quot;2014.02.24 00:00:00 UTC&quot;,
+    &quot;lastModified_str&quot;: &quot;2014.02.24 07:00:36 UTC&quot;,
+    &quot;date_local_str&quot;: &quot;2014.02.24 00:00:00 UTC&quot;,
+    &quot;date_local&quot;: 1393200000
+},
+...
+}
+</code></pre>
+<p>as we can see both provide similar data but in a completely different data model.
+Our adapters will be tasked with converting this data to a common data model that
+ the DataAggregator will be able to operate on.</p>
+<p>As an example let&#39;s say that we want to work with weather data shaped as follows:</p>
+<pre><code>{
+  location: {
+    lat,
+    lon,
+    resortId,
+    resortName,
+    country
+  },
+  wind:{
+    speed
+  },
+  temperature:{
+    max,
+    min
+  },
+  date:{
+    timestamp,
+  },
+  mainType: &quot;sun&quot;|&quot;rain&quot;|&quot;snow&quot;
+}
+</code></pre>
+<p>A weather collector will first need to fetch resort locations (these are already
+ingested by a separate collector in our DB) from the proper index of our
+database (js pseudocode):</p>
+<pre><code>asynch _getResorts(){
+  resorts = (await fetch(&quot;${env.get(ELS_URL)}/resort/_search&quot;, method=&quot;PUT&quot;, body={
+    query: {
+      match_all: {}
+      }
+    })).body.toJson().hits.hits
+
+    return resorts
+}
+</code></pre>
+<p>then we have a method to get the weather from the resort info:</p>
+<pre><code>asynch _resortToResortWeather(resort){
+  rawResortWeather = (await fetch(&quot;https://api.openweathermap.org/data/2.5/weather?q=${resort.name},
+  ita&amp;appid=${env.get(&quot;OWM_KEY&quot;)}, method=&quot;GET&quot;)).body.tojson()
+
+  return {
+    location: {
+      lat: resort.lat,
+      lon: resort.lon,
+      resortId: resort.id,
+      resortName: resort.name,
+      country: resort.country
+    },
+    wind:{
+      speed: rawResortWeather.wind.speed
+    },
+    temperature:{
+      max: rawResortWeather.weather[0].temp_max,
+      min&quot; rawResortWeather.weather[0].temp_min,
+    },
+    date:{
+      timestamp: (new Date()).timestamp,
+    },
+    type: {Drizzle:&quot;rain&quot;, Sun: &quot;sun&quot;, Rain: &quot;rain&quot;, Snow:&quot;snow&quot;, &quot;Cloud&quot;:&quot;cloud&quot;}[rawResortWeather.weather[0].main]
+  }
+}
+</code></pre>
+<p>using onthesnow, beside the data model missmatch, we would have the additional
+ issue of dealing with  the fact that we store our own collection of resorts while
+ they have theirs and requests to their weather API need the ids of their resorts.
+ We could to slightly modify our method to enrich the resorts with onthesnow IDs.</p>
+<pre><code>asynch _getResorts(){
+  resorts = (await fetch(&quot;${env.get(ELS_URL)}/resort/_search&quot;, method=&quot;PUT&quot;, body={
+    query: {
+      match_all: {}
+      }
+    })).body.toJson().hits.hits
+
+    extResorts = (await fetch(&quot;https://onthesnow.com/externalservice/resort/&quot;, method=&quot;PUT&quot;)).body.toJson()
+
+    resorts = resorts.map(r =&gt;{
+         oId = extResorts.filter(er=&gt; er.name === r.name )[0]?.id
+         return oId? {...r, oId: oId}: null
+      }).filter(r=&gt;!!r)
+
+    return resorts
+}
+</code></pre>
+<p> then similarly:</p>
+<pre><code>asynch _resortToResortWeather(resort){
+  rawResortWeather = (await fetch(&quot;https://onthesnow.com/externalservice/resort/${resort.oId}/1/day/forecast,
+  ita&amp;appid=${env.get(&quot;OWM_KEY&quot;)}, method=&quot;GET&quot;)).body.tojson()
+
+  return {
+    location: {
+      lat: resort.lat,
+      lon: resort.lon,
+      resortId: resort.id,
+      resortName: resort.name,
+      country: resort.country
+    },
+    wind:{
+    },
+    temperature:{
+      max: rawResortWeather.currentWeather.tempTopMax
+      min&quot; rawResortWeather.weather[0].tempBottomMin,
+    },
+    date:{
+      timestamp: (new Date()).timestamp,
+    },
+    type: {Sun: &quot;SUN&quot;, Rain: &quot;RAIN&quot;, Snow:&quot;SNOW&quot;, &quot;cloud&quot;:&quot;CLOUD&quot;}[rawResortWeather.weatherSymbol]
+  }
+}
+</code></pre>
+<p> after that we would have to repeat the process for all resorts:</p>
+<pre><code>ingest(){
+ resorts = await _getResorts()
+ weatherPoints = Promise.awaitAll(resorts.map(_resortToResortWeather))
+
+ body = weatherPoints.flatMap(wp =&gt; [{index:{}}, wp]).map(x =&gt; JSON.stringify(x)).join(&quot;\n&quot;)
+
+ fetch(&quot;${env.get(ELS_URL)}/weatherPoints/_bulk&quot;, method=&quot;POST&quot;, body=body)
+}
+</code></pre>
+<p> once this collected data is ingested in the various indexes it can then be used
+ by the DataAggregator component.</p>
+<h1 id="7">7</h1>
+<p>All the couplings in the mobile application are quite straightfoward already. The
+only component with more than one coupling is <code>Redux Actions</code>, this component has
+the responsability of handling requests from the UI and perform fetches if necessary.
+To handle the possible outcomes of a request we  perform them one after the other
+as shown in the process view of ex 8:</p>
+<img src="./puml_e47.svg"><p>removing coupling between this component and the &quot;LS Service&quot; or the &quot;Skip API&quot;
+would just make interactions more convoluted. The coupling between it and the &quot;Redux Store&quot;
+is not direct as we communicate with it through the dispatch function. It is perhaps
+similar to a bus connector.</p>
+<p>Moving onto the API:</p>
+<p> We are using a shared DB for the various types of data and have all the collectors
+ adapters access it as active components to ingest data instead of
+ having another component call them :this only makes them coupled to the shape of the data
+  they need to read and write so we can&#39;t make it looser.</p>
+<p> The backend &quot;Service&quot; component is coupled with the <code>DataAggregator</code>,
+ the <code>User db</code> and the <code>Info db</code>: we could turn the <code>DataAggregator</code> into an active
+ component writing directly to the <code>Info db</code>. At this point the coupling between
+ the <code>DataAggregator</code> and <code>Service</code> component would be cut. On the other hand moving
+ the cache from the control of the now active <code>DataAggregator</code> would be necessary:
+ we can proxy the fetch function to use a cache when calling our <code>Info db</code>
+  (or as a simpler approach just use a dedicated call to access it).</p>
+<p>We would end up with the following connector view:</p>
+<img src="./puml_e48.svg"><p> the <code>proxy caller</code> component could follow a very simple approach to maintain
+ the cache which is to assume POST calls to our database are write operations
+ (and the relevant index cache should be invalidated) while GET are always
+ read operations.</p>
+<h1 id="ex---physical-and-deployment-views"><span class='task'>12.</span>  Physical and Deployment Views</h1>
+<section class="instructions"><p>a. Extend your architectural model with the following viewpoints:</p>
+<ol>
+<li><p>Physical or Container View</p>
+</li>
+<li><p>Deployment View</p>
+</li>
+</ol>
+<p>Your model should be non-trivial: include more than one physical device/virtual container (or both). Be ready to discuss which connectors are found at the device/container boundaries.</p>
+<p>b. Write an ADR about which deployment strategy you plan to adopt. The alternatives to be considered are: big bang, blue/green, shadow, pilot, gradual phase-in, canary, A/B testing.</p>
+<p>c. (Optional) Prepare a demo of a basic continuous integration and delivery pipeline for your architectural documentation so that you can obtain a single, integrated PDF with all the viewpoints you have modeled so far.</p>
+<p>For example:</p>
+<ul>
+<li>configure a GitHub webhook to be called whenever you push changes to your documentation</li>
+<li>setup a GitHub action (or similar) to build and publish your documentation on a website</li>
+</ul>
+<section class="pass"><span>&starf;&star;&star;: </span>1 physical view, 1 deployment view, 1 ADR (b.)</section><section class="ok"><span>&starf;&starf;&star;: </span>&gt;1 physical view, &gt;1 deployment view, 1 ADR (b.)</section><section class="exceed"><span>&starf;&starf;&starf;: </span>1 physical view, 1 deployment view, 1 ADR (b.) + 1 demo (c.)</section></section><h2 id="container-view">Container view</h2>
+<img src="./puml_e49.svg"><h2 id="deployment-view">Deployment view</h2>
+<img src="./puml_e50.svg"><h2 id="deployment-strategy-adr">Deployment strategy ADR</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>What protocol skip should use to release a new version.</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>New releases are a critical moment in the life of an application, a bad release
+can easily cause users to migrate to competitors. At the same time users expect
+applications to improve over time and might not even agree that new features
+are improvements.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>We don&#39;t want to compromise the availability and reliability of our application
+when releasing a new version. At the same time we want to avoid spending a
+major amount of resources if possible.</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>canary</li>
+<li>shadow</li>
+<li>gradual pahse-in</li>
+<li>A/B</li>
+<li>Blue/Green</li>
+<li>Big Bang</li>
+<li>pilot</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>canary -&gt; gradual phase-in: front-end
+back-end: canary</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>We want to give users some flexibility to update their application, at the same
+time we don&#39;t want to confuse them with ulterior options to rollback their changes
+and, at some point, we want all of them to move to the new version.</p>
+<p>A gradual phase-in (obviously preceeded by testing with pilots) adapts quite well
+to this requirements and doesn&#39;t need us to develop extra infrastructure. A
+deployment with a canary approach might still be risky as canary users might
+carry some bias which is why we complement it with a gradual phase-in.</p>
+<p>The A/B method could be emplyed if there are strong doubts between two differently
+designed versions of our applications but it might prove to be expensive to enact
+and should be used carefully.</p>
+<p>For the backend we are mostly interested in the fact that new updates won&#39;t
+contain bugs and break the application so even users with biases will still work
+which is why we go with a canary approach. With more resources we could compare
+results users obtain from the new API with the old one via a shadow approach
+but it would likley require tons of extra work.</p>
+<h1 id="ex---availability-and-services"><span class='task'>13.</span>  Availability and Services</h1>
+<section class="instructions"><p>The goal of this week is to plan how to deliver your software as a service with high availability.</p>
+<ol>
+<li>If necessary, change your deployment design so that your software is hosted on a server (which could be running as a Cloud VM). Your SaaS architecture should show how your SaaS can be remotely accessed from a client such as a Web browser, or a mobile app</li>
+<li>Sketch your software as a service pricing model (optional)</li>
+<li>How would you define the availability requirements in your project domain? For example, what would be your expectation for the duration of planned/unplanned downtimes or the longest response time tolerated by your clients?</li>
+<li>Which strategy do you adopt to monitor your service&#39;s availability? Extend your architecture with a watchdog or a heartbeat monitor and motivate your choice with an ADR.</li>
+<li>What happens when a stateless component goes down? model a sequence diagram to show what needs to happen to recover one of your critical stateless components</li>
+<li>How do you plan to recover stateful components? write an ADR about your choice of replication strategy and whether you prefer consistency vs. availability. Also, consider whether event sourcing would help in your context.</li>
+<li>How do you plan to avoid cascading failures? Be ready to discuss how the connectors (modeled in your connector view) impact the reliability of your architecture.</li>
+<li>How did you mitigate the impact of your external dependencies being not available? (if applicable)</li>
+</ol>
+<section class="pass"><span>&starf;&star;&star;: </span>1, 3, 4, one of:  5, 6, 7, 8</section><section class="ok"><span>&starf;&starf;&star;: </span>1, 2, 3, 4, two of:  5, 6, 7, 8</section><section class="exceed"><span>&starf;&starf;&starf;: </span>1, 2, 3, 4, 5, 6, 7, 8</section></section><h1 id="ex---scalability"><span class='task'>14.</span>  Scalability</h1>
+<section class="instructions"><p>Now that your architecture delivers your software as a service, let&#39;s redesign it so that it can scale!</p>
+<ol>
+<li><p>Pick one scalability dimension: number of clients, size of input, size of state, number of dependencies</p>
+</li>
+<li><p>How well does your architecture scale along the chosen dimension? Where do you expect the bottleneck to be?</p>
+</li>
+<li><p>Modify your architecture to remove the scalability bottleneck you have identified (show both logical, process and deployment view) - consider whether the API/interface of the bottleneck component should be improved.</p>
+</li>
+<li><p>Write an ADR regarding the scalability pattern you have introduced.</p>
+</li>
+<li><p>Write an ADR regarding the issue of component discovery, choosing one of the alternatives: dependency injection vs. directory. Can you identify an existing component playing the role of directory/dependency injection container? Could you give an example of where you would need to add such component to facilitate dynamic component discovery?</p>
+</li>
+</ol>
+<section class="pass"><span>&starf;&star;&star;: </span>1, 2, 3, 5</section><section class="ok"><span>&starf;&starf;&star;: </span>1, 2, 3, 4, 5</section><section class="exceed"><span>&starf;&starf;&starf;: </span>1, 2, 3, 4, 5 then redo 1, 2, 3 for different scalability dimensions</section></section><h1 id="ex---flexibility"><span class='task'>15.</span>  Flexibility</h1>
+<section class="instructions"><p>Only dead software stops changing. You just received a message from your customer, they have an idea. Is your architecture ready for it?</p>
+<ol>
+<li><p>Pick a new use case scenario. Precisely, what exactly do you need to change of your existing architecture so that it can be supported? Model the updated logical/process/deployment views.</p>
+</li>
+<li><p>Pick another use case scenario so that it can be supported without any major architectural change (i.e., while you cannot add new components, it is possible to extend the interface of existing ones or introduce new dependencies). Illustrate with a process view, how your previous design can satisfy the new requirement.</p>
+</li>
+<li><p>Change impact. One of your externally sourced component/Web service API has announced it will introduce a breaking change. What is the impact of such change? How can you control and limit the impact of such change? Update your logical view</p>
+</li>
+<li><p>Open up your architecture so that it can be extended with plugins by its end-users. Where would be a good extension point? Update your logical view and give at least one example of what a plugin would actually do.</p>
+</li>
+<li><p>Assuming you have a centralized deployment with all stateful components storing their state in the same database, propose a strategy to split the monolith into at least two different microservices. Model the new logical/deployment view as well as the interfaces of each microservice you introduce.</p>
+</li>
+</ol>
+<section class="pass"><span>&starf;&star;&star;: </span>1, one out of 2-5.</section><section class="ok"><span>&starf;&starf;&star;: </span>1, two out of 2-5.</section><section class="exceed"><span>&starf;&starf;&starf;: </span>1-5.</section></section>
+    </main>
+
+
+<footer>
+
+</footer>
+
+</body>
+
+</html>
