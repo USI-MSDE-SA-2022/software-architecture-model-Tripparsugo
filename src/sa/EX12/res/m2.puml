@@ -1,0 +1,93 @@
+@startuml
+!include <C4/C4_Container>
+!include <C4/C4_Context>
+!include <C4/C4_Component>
+
+
+
+System_Boundary(boundary1, "user device"){
+Container(mobileApp, "mobile app", "") {
+  }
+
+}
+
+System_Boundary(boundary2, "User DB server"){
+
+Container(userDb, "User Database container", "", ""){
+}
+}
+
+
+System_Boundary(boundary3, "Info DB server"){
+
+Container(info, "Info Provider", "", ""){
+
+}
+}
+
+
+
+
+
+
+System_Boundary(boundary4, "API server", "", ""){
+Container(api, "Skip API", "") {
+  }
+
+}
+
+
+
+
+System_Boundary(boundary5, "Aggregator server", "", ""){
+
+Container(aggregator, "aggregator", "") {
+
+}
+}
+
+
+
+
+
+
+System_Boundary(boundary6, "Collector server", "Docker", ""){
+    Component(collectors, "collectors"){
+    Component(collectorComp1, "collector 1")
+    Component(collectorComp2, "collector 2")
+    Component(collectorCompN, "collector N")
+}
+
+}
+
+
+
+
+System_Boundary(boundary8, "External server 1"){
+Container(EAPI1, "external API 1") {
+  }
+
+}
+
+
+System_Boundary(boundary9, "External server N"){
+
+Container(EAPIN, "external API N")
+}
+
+
+
+
+
+Rel(collectors, info, "web")
+Rel(collectors, EAPI1, "web")
+Rel(collectors, EAPIN, "web")
+
+Rel(aggregator, info, "web")
+
+
+Rel(api, info, "web")
+Rel(api, userDb, "RPC")
+
+Rel(mobileApp, api, "web")
+@enduml
