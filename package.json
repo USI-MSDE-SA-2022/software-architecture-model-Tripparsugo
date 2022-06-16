@@ -15,6 +15,6 @@
   "scripts": {
     "build": "node build.js",
     "clean": "rm -rf upload/*",
-    "watch": "onchange src/** -- yarn build",
+    "watch": "onchange src/** -- yarn build"
   }
 }
