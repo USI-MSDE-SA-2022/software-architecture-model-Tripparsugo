@@ -1184,8 +1184,10 @@ major amount of resources if possible.</p>
 <ol start="5">
 <li>Which one did you choose?</li>
 </ol>
-<p>canary -&gt; gradual phase-in: front-end
-back-end: canary</p>
+<ul>
+<li>front-end: canary -&gt; gradual phase-in</li>
+<li>back-end: canary</li>
+</ul>
 <ol start="6">
 <li>What is the main reason for that?</li>
 </ol>
@@ -1204,6 +1206,11 @@ contain bugs and break the application so even users with biases will still work
 which is why we go with a canary approach. With more resources we could compare
 results users obtain from the new API with the old one via a shadow approach
 but it would likley require tons of extra work.</p>
+<h2 id="demo">Demo</h2>
+<p>This document is deployed on:</p>
+<pre><code>https://usi-msde-sa-2022.github.io/software-architecture-model-Tripparsugo/
+</code></pre>
+<p>by the <code>.github/workflows/deploy_on_pages.yaml</code> github action.</p>
 <h1 id="ex---availability-and-services"><span class='task'>13.</span>  Availability and Services</h1>
 <section class="instructions"><p>The goal of this week is to plan how to deliver your software as a service with high availability.</p>
 <ol>
