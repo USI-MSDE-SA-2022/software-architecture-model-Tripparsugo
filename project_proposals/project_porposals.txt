@@ -1,18 +1,18 @@
-Cagliostro 
+Cagliostro
 is a platform that allows its users to create and publish text based games.
-The games would be created via a dedicated editor available as a webapp and distributed on the platform where they would also be playable from a separate app. 
-In the app the games should be 
+The games would be created via a dedicated editor available as a webapp and distributed on the platform where they would also be playable from a separate app.
+In the app the games should be
 
 Within the limits of the games being text based the editor allows a high flexibility on their appearance (ex: images, backgrounds, fonts) and mechanics (ex: single character, party of characters, inventory, 2d map navigation).
 
 As of now very simple text based applications seem to enjoy a somewhat big success (with quite a few with over 500k downloads) especially when compared to the effort that was put into their development so there would seem to be a considerable player base that could enjoy an app with many such games available.
 
-As for the editor a few are available but they only have very basic features (no map exploration for instance) 
+As for the editor a few are available but they only have very basic features (no map exploration for instance)
 
 
 
-Docet 
-is an idea based off a project we did for human & computer interaction and consists of an application where teachers can upload schedule  and materialfor their course following a simple folder based structure and allow students to enroll into it. 
+Docet
+is an idea based off a project we did for human & computer interaction and consists of an application where teachers can upload schedule  and materialfor their course following a simple folder based structure and allow students to enroll into it.
 
 Compared to platform such as Udemy this application is more oriented to middle/high school teachers and their students rather than an open public and focuses on keeping the student up to date on the schedule especially unable to attend school.
 
