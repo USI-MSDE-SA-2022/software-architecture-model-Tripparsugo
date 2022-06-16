@@ -3483,8 +3483,8 @@ major amount of resources if possible.
 
 5. Which one did you choose?
 
-canary -> gradual phase-in: front-end
-back-end: canary
+* front-end: canary -> gradual phase-in
+* back-end: canary
 
 6. What is the main reason for that?
 
@@ -3509,6 +3509,14 @@ which is why we go with a canary approach. With more resources we could compare
 results users obtain from the new API with the old one via a shadow approach
 but it would likley require tons of extra work.
 
+## Demo
+This document is deployed on:
+
+```
+https://usi-msde-sa-2022.github.io/software-architecture-model-Tripparsugo/
+```
+
+by the ```.github/workflows/deploy_on_pages.yaml``` github action.
 
 
 
