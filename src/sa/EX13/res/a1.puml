@@ -1,0 +1,31 @@
+## ADR #1
+
+1. What did you decide?
+
+What system we should use to detect the availability of our service.
+
+2. What was the context for your decision?
+
+Our application uses multiple services that could experience downtime.
+
+
+3. What is the problem you are trying to solve?
+
+We want to monitor the availability of our services and external API, we use
+to act occordingly if something is not working to fix it as soon as possible.
+
+4.  Which alternative options did you consider?
+
+* watchdog
+* heartbeat
+
+
+5. Which one did you choose?
+
+watchdog
+
+6. What is the main reason for that?
+
+With a watchdog we don't need to add extra code to our services and we will be
+also able to monitor their response time which is important to avoid compromising
+the usability of our mobile app.

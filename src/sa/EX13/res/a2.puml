@@ -1,0 +1,49 @@
+## ADR #1
+
+1. What did you decide?
+
+What replication strategy to use for our databases.
+
+2. What was the context for your decision?
+
+It's impossible to have a database with all the following properties:
+
+* partition tollerance
+* consinstency
+* availability
+
+we have to decide what is is priority in our system and follow with an adequate
+replication strategy for our database.
+
+
+3. What is the problem you are trying to solve?
+
+Since we need a distributed database in order to scale our application we need
+to balance out availability and consistency in the best way possible for our users.
+
+
+4.  Which alternative options did you consider?
+
+* no replication
+* synchronous replication
+* asynchronous replication
+
+
+5. Which one did you choose?
+
+user db: synchronous replication
+
+info db: asynchronous replication
+
+
+6. What is the main reason for that?
+
+We need to maintain consistency over our user database: if a user changes his
+password we can't have the old one possibly working after confirming the change.
+Only a few requests should be sent to this database so resulting slower response
+time shouldn't be an issue.
+
+For our info database eventual consinstency is enough, even if we don't provide
+data from the latest state of our database there will be no issues. Since lots of
+writes are performed on this database synchronous replication would significantly
+hamper its performance. By default elasticsearch is a AP database.
