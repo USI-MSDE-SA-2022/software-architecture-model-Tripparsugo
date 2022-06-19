@@ -302,7 +302,7 @@ Reviews by users are weighted based on how recent they are and expire after a wh
 <li><p>Refine the scenario using the following structure:</p>
 </li>
 </ol>
-<img src="./puml_e18.svg"><p><em>Stimulus</em>: condition affecting the system</p>
+<img src="./puml_e21.svg"><p><em>Stimulus</em>: condition affecting the system</p>
 <p><em>Source</em>: entity generating the stimulus</p>
 <p><em>Environment</em>: context under which stimulus occurred (e.g., build, test, deployment, startup, normal operation, overload, failure, attack, change)</p>
 <p><em>Response</em>: observable result of the stimulus</p>
@@ -310,7 +310,7 @@ Reviews by users are weighted based on how recent they are and expire after a wh
 <section class="pass"><span>&starf;&star;&star;: </span>3 scenarios</section><section class="ok"><span>&starf;&starf;&star;: </span>&gt;3 scenarios</section><section class="exceed"><span>&starf;&starf;&starf;: </span>&gt;6 scenarios using challenging qualities</section></section><h2 id="example-scenario">Example Scenario</h2>
 <p>Quality: <em>Recoverability</em></p>
 <p>Scenario: In case of power failure, rebooting the system should take up to 20 seconds.</p>
-<img src="./puml_e19.svg"><p>#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</p>
+<img src="./puml_e22.svg"><p>#::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::</p>
 <h2 id="adr-1">ADR #1</h2>
 <ol>
 <li>What did you decide?</li>
@@ -586,49 +586,49 @@ designed.</li>
 <p>Scenario: The code written for the application is compatible with both Android
 and IoS  with none or relatively trivial changes costing little effort,
 time and money to be deployed on both OS at the same time once the code is written.</p>
-<img src="./puml_e20.svg"><h2 id="example-scenario-2">Example Scenario 2</h2>
+<img src="./puml_e23.svg"><h2 id="example-scenario-2">Example Scenario 2</h2>
 <p>Quality: <em>Interoperability</em> , <em>Usability</em></p>
 <p>Scenario: The software should be able to fetch data from multiple weather APIs
 in order to provide users with reliable data over a vast amount of locations.
 The fetching and elaboration of this data to a usable summary should be done
 server side for efficiency and speed.
  Our server should act as an adaptor over the whole data for the application.</p>
-<img src="./puml_e21.svg"><h2 id="example-scenario-3">Example Scenario 3</h2>
+<img src="./puml_e24.svg"><h2 id="example-scenario-3">Example Scenario 3</h2>
 <p>Quality: <em>Usability</em> , <em>Performance</em></p>
 <p>Scenario: The survey the user completes to provide the us with updates on
 snow conditions should on average take less than 30s to complete.</p>
-<img src="./puml_e22.svg"><h2 id="example-scenario-4">Example Scenario 4</h2>
+<img src="./puml_e25.svg"><h2 id="example-scenario-4">Example Scenario 4</h2>
 <p>Quality: ? maybe it&#39;s functional ?</p>
 <p>Scenario: The application should be able to store a snow update in case of
 poor connection (as often is on the slopes) for at least a few hours and send
 the data later to our server without having the user compile another snow update.</p>
-<img src="./puml_e23.svg"><h2 id="example-scenario-5">Example Scenario 5</h2>
+<img src="./puml_e26.svg"><h2 id="example-scenario-5">Example Scenario 5</h2>
 <p>Quality: <em>Availability</em></p>
 <p>Scenario: The application should have an uptime of at least 99.5% for weather
 and slope info assuming a connection is available.</p>
-<img src="./puml_e24.svg"><h2 id="example-scenario-6">Example Scenario 6</h2>
+<img src="./puml_e27.svg"><h2 id="example-scenario-6">Example Scenario 6</h2>
 <p>Quality: <em>Deployability</em> , <em>Maintainability</em></p>
 <p>Scenario: The whole software (app + server) should have a test coverage of
 at least 95% when deployed and for its whole lifecycle.</p>
 <p>Without said requirement an automatic pipeline should fail the deployment.</p>
-<img src="./puml_e25.svg"><h2 id="example-scenario-7">Example Scenario 7</h2>
+<img src="./puml_e28.svg"><h2 id="example-scenario-7">Example Scenario 7</h2>
 <p>Quality: <em>Visibility</em> , <em>Maintainability</em> , <em>Privacy</em></p>
 <p>Scenario: When the service of the App is not available the application should
 show the user a clear message stating the reason. If the reason is a fault in
 the software a log should be sent to the developer not containing sensible user
 data.</p>
-<img src="./puml_e26.svg"><h1 id="ex---feature-modeling"><span class='task'>5.</span>  Feature Modeling</h1>
+<img src="./puml_e29.svg"><h1 id="ex---feature-modeling"><span class='task'>5.</span>  Feature Modeling</h1>
 <section class="instructions"><p>In the context of your chosen project domain, describe your domain using a feature model.</p>
 <p>The feature model should be correctly visualized using the following template:</p>
 <p><img src="./puml_15.svg" alt="Example Feature Model Diagram"></p>
 <p>If possible, make use of all modeling constructs.</p>
 <section class="pass"><span>&starf;&star;&star;: </span>Include at least 4 non-trivial features</section><section class="ok"><span>&starf;&starf;&star;: </span>Include at least 6 non-trivial features, which are all implemented by your project</section><section class="exceed"><span>&starf;&starf;&starf;: </span>Include more than 8 non-trivial features, indicate which are found in your project and which belong to one competitor</section></section><p>#:::::::::::::</p>
-<img src="./puml_e27.svg"><h1 id="ex---context-diagram"><span class='task'>6.</span>  Context Diagram</h1>
+<img src="./puml_e30.svg"><h1 id="ex---context-diagram"><span class='task'>6.</span>  Context Diagram</h1>
 <section class="instructions"><p>Prepare a context diagram to define the design boundary for your project.</p>
 <p>Here is a PlantUML/C4 example to get started.</p>
 <p><img src="./puml_16.svg" alt="Example Context Diagram"></p>
 <p>Make sure to include all possible user personas and external dependencies you may need.</p>
-<section class="pass"><span>&starf;&star;&star;: </span>1 User and 1 Dependency</section><section class="ok"><span>&starf;&starf;&star;: </span>&gt;1 User and &gt;1 Dependency</section><section class="exceed"><span>&starf;&starf;&starf;: </span>&gt;1 User and &gt;1 Dependency, with both incoming and outgoing dependencies</section></section><img src="./puml_e28.svg"><h1 id="ex---component-model-top-down"><span class='task'>7.</span>  Component Model: Top-Down</h1>
+<section class="pass"><span>&starf;&star;&star;: </span>1 User and 1 Dependency</section><section class="ok"><span>&starf;&starf;&star;: </span>&gt;1 User and &gt;1 Dependency</section><section class="exceed"><span>&starf;&starf;&starf;: </span>&gt;1 User and &gt;1 Dependency, with both incoming and outgoing dependencies</section></section><img src="./puml_e31.svg"><h1 id="ex---component-model-top-down"><span class='task'>7.</span>  Component Model: Top-Down</h1>
 <section class="instructions"><p>Within the context of your project domain, represent a model of your modular software architecture decomposed into components.</p>
 <p>The number of components in your logical view should be between 6 and 9:</p>
 <ul>
@@ -641,19 +641,19 @@ data.</p>
 <p>You can add additional process views showing how other use cases can be satisfied by the same set of components.</p>
 <p>This assignment will focus on modularity-related decisions, we will worry about deployment and the container view later.</p>
 <p>Here is a PlantUML example logical view and process view.</p>
-<img src="./puml_e29.svg"><img src="./puml_e30.svg"><section class="hint"><span>Hint: </span>How to connect sub-components to other external components? Use this pattern.</section><img src="./puml_e31.svg"><section class="pass"><span>&starf;&star;&star;: </span>6 components (1 decomposed), 1 use case/process view</section><section class="ok"><span>&starf;&starf;&star;: </span>6 components (1 decomposed), 2 use case/process view</section><section class="exceed"><span>&starf;&starf;&starf;: </span>&gt;6 components (&gt;1 decomposed) and &gt;2 use case/process view</section></section><p>#:</p>
+<img src="./puml_e32.svg"><img src="./puml_e33.svg"><section class="hint"><span>Hint: </span>How to connect sub-components to other external components? Use this pattern.</section><img src="./puml_e34.svg"><section class="pass"><span>&starf;&star;&star;: </span>6 components (1 decomposed), 1 use case/process view</section><section class="ok"><span>&starf;&starf;&star;: </span>6 components (1 decomposed), 2 use case/process view</section><section class="exceed"><span>&starf;&starf;&starf;: </span>&gt;6 components (&gt;1 decomposed) and &gt;2 use case/process view</section></section><p>#:</p>
 <h2 id="logical-view">Logical View</h2>
-<img src="./puml_e32.svg"><h2 id="process-views">Process Views</h2>
-<img src="./puml_e33.svg"><img src="./puml_e34.svg"><img src="./puml_e35.svg"><pre><code>&quot;Data aggregator&quot; and &quot;External API&quot; sub-components are not connected.
+<img src="./puml_e35.svg"><h2 id="process-views">Process Views</h2>
+<img src="./puml_e36.svg"><img src="./puml_e37.svg"><img src="./puml_e38.svg"><pre><code>&quot;Data aggregator&quot; and &quot;External API&quot; sub-components are not connected.
 </code></pre>
 <h1 id="ex---component-model-bottom-up"><span class='task'>8.</span>  Component Model: Bottom-Up</h1>
 <section class="instructions"><p>Within the context of your project domain, represent a model of your modular software architecture decomposed into components.</p>
 <p>To design this model you should attempt to buy and reuse as many components as possible.</p>
 <p>In addition to the logical and process views, you should give a precise list to all sources and prices of the components you have selected to be reused.</p>
 <p>Write an ADR to document your component selection process (indicating which alternatives were considered).</p>
-<section class="pass"><span>&starf;&star;&star;: </span>Existing design with at least 1 reused components (1 Logical View, 1 Process View)</section><section class="ok"><span>&starf;&starf;&star;: </span>Existing design with at least 3 reused components (1 Logical View, 1 Process View, 1 ADR)</section><section class="exceed"><span>&starf;&starf;&starf;: </span>Redesign based on &gt;3 reused components (1 Logical View, &gt;1 Process View, &gt;1 ADR)</section></section><img src="./puml_e36.svg"><p>|</p>
-<img src="./puml_e37.svg"><p>|</p>
-<img src="./puml_e38.svg"><h2 id="adr-1-1">ADR #1</h2>
+<section class="pass"><span>&starf;&star;&star;: </span>Existing design with at least 1 reused components (1 Logical View, 1 Process View)</section><section class="ok"><span>&starf;&starf;&star;: </span>Existing design with at least 3 reused components (1 Logical View, 1 Process View, 1 ADR)</section><section class="exceed"><span>&starf;&starf;&starf;: </span>Redesign based on &gt;3 reused components (1 Logical View, &gt;1 Process View, &gt;1 ADR)</section></section><img src="./puml_e39.svg"><p>|</p>
+<img src="./puml_e40.svg"><p>|</p>
+<img src="./puml_e41.svg"><h2 id="adr-1-1">ADR #1</h2>
 <ol>
 <li>What did you decide?</li>
 </ol>
@@ -735,15 +735,15 @@ Free up until 1k requests/day then 10USD/1k requests.</p>
 <p><img src="./puml_17.svg" alt="Separate Required/Provided Interfaces"></p>
 <p>The second template annotates the logical view with the interface descriptions: less redundant, but needs the logical dependencies to be modeled to show which are the required interfaces.</p>
 <p><img src="./puml_18.svg" alt="Shared Interfaces"></p>
-<section class="pass"><span>&starf;&star;&star;: </span>define interfaces of all outer-level components</section><section class="ok"><span>&starf;&starf;&star;: </span>Define interfaces of all outer-level components. Does your architecture publish a Web API? If not, extend it so that it does.</section><section class="exceed"><span>&starf;&starf;&starf;: </span>Also, document the Web API using the OpenAPI language. You can use the <a href="http://api-ace.inf.usi.ch/openapi-to-tree/">OpenAPI-to-Tree</a> tool to visualize the structure of your OpenAPI description.</section></section><img src="./puml_e39.svg"><h1 id="ex---connector-view"><span class='task'>10.</span>  Connector View</h1>
+<section class="pass"><span>&starf;&star;&star;: </span>define interfaces of all outer-level components</section><section class="ok"><span>&starf;&starf;&star;: </span>Define interfaces of all outer-level components. Does your architecture publish a Web API? If not, extend it so that it does.</section><section class="exceed"><span>&starf;&starf;&starf;: </span>Also, document the Web API using the OpenAPI language. You can use the <a href="http://api-ace.inf.usi.ch/openapi-to-tree/">OpenAPI-to-Tree</a> tool to visualize the structure of your OpenAPI description.</section></section><img src="./puml_e42.svg"><h1 id="ex---connector-view"><span class='task'>10.</span>  Connector View</h1>
 <section class="instructions"><p>Extend your existing models introducing the connector view</p>
 <p>For every pair of connected components (logical view), pick the most suitable connector. Existing components can play the role of connector, or new connectors may need to be introduced.</p>
 <p>Make sure that the interactions shown in the process views reflect the primitives of the selected connector</p>
 <section class="pass"><span>&starf;&star;&star;: </span>model existing connectors based on previous model decisions</section><section class="ok"><span>&starf;&starf;&star;: </span>model existing connectors based on previous model decisions, write an ADR about the choice of one connector</section><section class="exceed"><span>&starf;&starf;&starf;: </span>introduce a new type of connector and update your existing process view
 (sequence diagram) to show the connector primitives in action</section></section><p>We have split the connector view in two sections:</p>
 <p>Here is up to the &quot;Data Aggregator&quot; component</p>
-<img src="./puml_e40.svg"><p>Here&#39;s the Data aggregator section:</p>
-<img src="./puml_e41.svg"><p>For the &quot;Data aggregator&quot; we are using a shared DB connector as explained with the
+<img src="./puml_e43.svg"><p>Here&#39;s the Data aggregator section:</p>
+<img src="./puml_e44.svg"><p>For the &quot;Data aggregator&quot; we are using a shared DB connector as explained with the
 following ADR:</p>
 <h2 id="adr">ADR</h2>
 <ol>
@@ -759,7 +759,7 @@ necessary but some collectors need to access data collected by other collectors.
 For instance the weather collector needs the list of resorts he needs
 to get the weather for.
 Below a graph representing the situation:</p>
-<img src="./puml_e42.svg"><ol start="3">
+<img src="./puml_e45.svg"><ol start="3">
 <li>What is the problem you are trying to solve?</li>
 </ol>
 <p>We want to avoid a potentially large processing time to be felt by users.</p>
@@ -800,7 +800,7 @@ of data into an active task to avoid the user having to wait for it.</p>
 unneeded data but we believe it to be worth the tradeoff.</p>
 <p>The following process view shows the work behind a call to the API, as we cant
 observe updates happen independently:</p>
-<img src="./puml_e43.svg"><h1 id="ex---adapters-and-coupling"><span class='task'>11.</span>  Adapters and Coupling</h1>
+<img src="./puml_e46.svg"><h1 id="ex---adapters-and-coupling"><span class='task'>11.</span>  Adapters and Coupling</h1>
 <section class="instructions"><ol>
 <li>Highlight the connectors (or components) in your existing bottom-up design playing the role of adapter. (We suggest to use the bottom-up design since when dealing with externally sourced components, their interfaces can be a source of mismatches).</li>
 <li>Which kind of mismatch** are they solving?</li>
@@ -835,10 +835,10 @@ through their interface by the way they ingest it in the shared database.</p>
 <p>Each combination of data type and source needs its own adapter with
 knowledge on how to retrive it and reshape it.</p>
 <p>The following view (from ex10):</p>
-<img src="./puml_e44.svg"><p>becomes with adapters:</p>
-<img src="./puml_e45.svg"><p>We have omitted the shared database to better show the role of the connectors.
+<img src="./puml_e47.svg"><p>becomes with adapters:</p>
+<img src="./puml_e48.svg"><p>We have omitted the shared database to better show the role of the connectors.
 Adding it in we have the following:</p>
-<img src="./puml_e46.svg"><p>The <code>DataAggregator</code> component is another adapter which queries the database and
+<img src="./puml_e49.svg"><p>The <code>DataAggregator</code> component is another adapter which queries the database and
 converts the ingested data into a shape closer to what the client needs. For instance
 an heatmap view (based on a specific criteria such as reviews, weather, affluency...)
 or information about a specific resort. Clearly we can&#39;t expect the client
@@ -872,7 +872,7 @@ Our service layer should not change whether we use Postgress, MySql or SQLite.</
 logic of our backend since the controller doesn&#39;t have to be aware of any components
 used by it.</p>
 <p>A view of it as follows:</p>
-<img src="./puml_e47.svg"><p>wouldn&#39;t be entirely accurate since the databases runs independently. We can&#39;t
+<img src="./puml_e50.svg"><p>wouldn&#39;t be entirely accurate since the databases runs independently. We can&#39;t
 represent them as part of the service but the controller is not aware of that...</p>
 <p>In general every API could be considered as a wrapping facade since it adapts functionality
 we don&#39;t see the implementation of to an interface.</p>
@@ -888,7 +888,7 @@ most used DSL for queries.</p>
 model used for it.</p>
 <h1 id="5">5</h1>
 <p>We are looking at the facets of the following coupling:</p>
-<img src="./puml_e48.svg"><h2 id="binding">Binding</h2>
+<img src="./puml_e51.svg"><h2 id="binding">Binding</h2>
 <p>Binding between the two components is done at design-time. The mobile application
 works by communicating with a back-end we design.</p>
 <h2 id="discovery">Discovery</h2>
@@ -1112,7 +1112,7 @@ only component with more than one coupling is <code>Redux Actions</code>, this c
 the responsability of handling requests from the UI and perform fetches if necessary.
 To handle the possible outcomes of a request we  perform them one after the other
 as shown in the process view of ex 8:</p>
-<img src="./puml_e49.svg"><p>removing coupling between this component and the &quot;LS Service&quot; or the &quot;Skip API&quot;
+<img src="./puml_e52.svg"><p>removing coupling between this component and the &quot;LS Service&quot; or the &quot;Skip API&quot;
 would just make interactions more convoluted. The coupling between it and the &quot;Redux Store&quot;
 is not direct as we communicate with it through the dispatch function. It is perhaps
 similar to a bus connector.</p>
@@ -1129,7 +1129,7 @@ similar to a bus connector.</p>
  we can proxy the fetch function to use a cache when calling our <code>Info db</code>
   (or as a simpler approach just use a dedicated call to access it).</p>
 <p>We would end up with the following connector view:</p>
-<img src="./puml_e50.svg"><p> the <code>proxy caller</code> component could follow a very simple approach to maintain
+<img src="./puml_e53.svg"><p> the <code>proxy caller</code> component could follow a very simple approach to maintain
  the cache which is to assume POST calls to our database are write operations
  (and the relevant index cache should be invalidated) while GET are always
  read operations.</p>
@@ -1150,8 +1150,8 @@ similar to a bus connector.</p>
 <li>setup a GitHub action (or similar) to build and publish your documentation on a website</li>
 </ul>
 <section class="pass"><span>&starf;&star;&star;: </span>1 physical view, 1 deployment view, 1 ADR (b.)</section><section class="ok"><span>&starf;&starf;&star;: </span>&gt;1 physical view, &gt;1 deployment view, 1 ADR (b.)</section><section class="exceed"><span>&starf;&starf;&starf;: </span>1 physical view, 1 deployment view, 1 ADR (b.) + 1 demo (c.)</section></section><h2 id="container-view">Container view</h2>
-<img src="./puml_e51.svg"><h2 id="deployment-view">Deployment view</h2>
-<img src="./puml_e52.svg"><h2 id="deployment-strategy-adr">Deployment strategy ADR</h2>
+<img src="./puml_e54.svg"><h2 id="deployment-view">Deployment view</h2>
+<img src="./puml_e55.svg"><h2 id="deployment-strategy-adr">Deployment strategy ADR</h2>
 <ol>
 <li>What did you decide?</li>
 </ol>
@@ -1288,8 +1288,8 @@ not received from the service it will attempt to restart the component (we assum
 the watchdog to have priviledge access to the container running the service in order
 to order a reboot). If that doesn&#39;t solve the problem its only recourse would be
 to send a message to an admin. We use multiple watchdogs to monitor each other.</p>
-<img src="./puml_e53.svg"><p>The system will be connected as follows:</p>
-<img src="./puml_e54.svg"><h2 id="6-1">6</h2>
+<img src="./puml_e56.svg"><p>The system will be connected as follows:</p>
+<img src="./puml_e57.svg"><h2 id="6-1">6</h2>
 <h2 id="adr-1-3">ADR #1</h2>
 <ol>
 <li>What did you decide?</li>
@@ -1366,7 +1366,126 @@ so if one went down we would still be able to serve a forecast on most resorts.<
 <li><p>Write an ADR regarding the issue of component discovery, choosing one of the alternatives: dependency injection vs. directory. Can you identify an existing component playing the role of directory/dependency injection container? Could you give an example of where you would need to add such component to facilitate dynamic component discovery?</p>
 </li>
 </ol>
-<section class="pass"><span>&starf;&star;&star;: </span>1, 2, 3, 5</section><section class="ok"><span>&starf;&starf;&star;: </span>1, 2, 3, 4, 5</section><section class="exceed"><span>&starf;&starf;&starf;: </span>1, 2, 3, 4, 5 then redo 1, 2, 3 for different scalability dimensions</section></section><h1 id="ex---flexibility"><span class='task'>15.</span>  Flexibility</h1>
+<section class="pass"><span>&starf;&star;&star;: </span>1, 2, 3, 5</section><section class="ok"><span>&starf;&starf;&star;: </span>1, 2, 3, 4, 5</section><section class="exceed"><span>&starf;&starf;&starf;: </span>1, 2, 3, 4, 5 then redo 1, 2, 3 for different scalability dimensions</section></section><h2 id="1-1">1</h2>
+<p>number of clients since it&#39;s most likely the one that could cause issues in our system.</p>
+<h2 id="2-1">2</h2>
+<p>At the moment it doesn&#39;t as there are a few potential bottlenecks:</p>
+<ul>
+<li><p>The API would fail to serve a large number of clients since it&#39;s a single instance
+The API is a stateless service so we can easily horizontally scale it by having
+multiple instances of it accessed through a load balacer. The standard DNS service
+can already be configured to act as a load balancer so this would solve the related
+issue which would work also if we were interested in making our application available
+via browser in the future. Otherwise we could just add our own load balancer on top of it
+Assuming the load balancer itself could become a bottleneck an alternative would be to
+perform &quot;load balancing&quot; on the client side based perhaps on a mapping between location
+and IP of the API, that seems excessive as a load balancer can scale vertically
+very efficiently.</p>
+</li>
+<li><p>While elasticsearch is by design horizontally scalable the we have put a reverse proxy
+to use a cache on top of it which could have consequences on the scalability of the system.
+We could use the already existng reverse proxy as a load balancer but this proxy has already the
+task of using a cache which would prevent it from being a hardware based load balancer.
+At this point the best option would likely be to add a dedicated load balancer for the
+various nodes and move instead the cache on the API.</p>
+</li>
+</ul>
+<p>An advantage of having a proxy on top of all our requests to es was that we could
+invalidate it once a write was seen, on the API we would instead be forced to have
+a lower consinstency (ex: we could cache the information of a resort for a certain duration
+  no matter what happens in our db, this would significantly reduce the needed
+  requests to our dbs).</p>
+<ul>
+<li>At the moment the userDB is a single instance SQL-based DB which could struggle with many writes
+For the user db MySQL Cluster is a solution adopted by many companies with high need
+for scalability and consinstency like facebook. Similarly to the previous point we
+could also use a load balancer here to split the traffic between the various nodes.</li>
+</ul>
+<h2 id="3-2">3</h2>
+<p>Logical view (arrow notation):</p>
+<img src="./puml_e58.svg"><p>Deployment view: it remains unchanged since all components needing a load balancer
+were already structured as independent services.</p>
+<img src="./puml_e59.svg"><p>Process view: all our load balancers work in the following way:</p>
+<img src="./puml_e60.svg"><h2 id="4-2">4</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>What patterns we should use to scale our application to accomodate a larger
+number of users</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>We want our system to accomodate a larger number of clients but
+it&#39;s not always possible simply pick a more powerful machine (scaling up).
+Often doubling our resources in this manner does not double the throughtput of
+our service which is way modern architerctures usually need to be able to
+scale out to multiple machines.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>We don&#39;t want the application to fail to perform due to a large number of
+concurrent requests from our users.</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>Sharding</li>
+<li>Load balancing</li>
+<li>Master/worker</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>Load Balancing + Sharding</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>Master/worker pattern does not apply to our case as we don&#39;t have issues scaling
+our input nor would we have any straightfoward way  to split our input.</p>
+<p>We are explicitly using load balancers to redirect requests to one of the available
+nodes implementing our stateless API.</p>
+<p>Sharding is the natural solution to scale out databases and most implementations
+also comes with internal load balancing between the nodes.</p>
+<p>In the vast majority of cases solutions like MySQL cluster and elasticsearch will
+ be able to support a very large number of requests with their own load balancer.
+ That being said the node elected as load balancer by the db might still be
+ insufficient so and unable to further scale up to forward the requests which is way
+ we have added our own load balancer. An example for this type of solution
+ is configuring <a href="https://www.elastic.co/guide/en/elastic-stack-deploy/current/azure-arm-template-load-balancing.html">ES to run using an external load balancer like
+ Azure Resource Manager</a></p>
+<h2 id="5-2">5</h2>
+<ol>
+<li>What did you decide?</li>
+</ol>
+<p>What discovery solution to apply for our dependencies.</p>
+<ol start="2">
+<li>What was the context for your decision?</li>
+</ol>
+<p>In many cases software dependencies are dynamic: we know statically that our software
+needs a certain type of component but not which implementation might be available
+and where to get it.</p>
+<ol start="3">
+<li>What is the problem you are trying to solve?</li>
+</ol>
+<p>We don&#39;t want our software to fail because it doesn&#39;t know which component implementations
+are available and how to reach them.</p>
+<ol start="4">
+<li>Which alternative options did you consider?</li>
+</ol>
+<ul>
+<li>Directory</li>
+<li>Injection</li>
+</ul>
+<ol start="5">
+<li>Which one did you choose?</li>
+</ol>
+<p>Directory</p>
+<ol start="6">
+<li>What is the main reason for that?</li>
+</ol>
+<p>DNS is a form of directory based load-balacing and we have no controll over that.</p>
+<p>We are also using load balancers to scale out which work with a directory.</p>
+<h1 id="ex---flexibility"><span class='task'>15.</span>  Flexibility</h1>
 <section class="instructions"><p>Only dead software stops changing. You just received a message from your customer, they have an idea. Is your architecture ready for it?</p>
 <ol>
 <li><p>Pick a new use case scenario. Precisely, what exactly do you need to change of your existing architecture so that it can be supported? Model the updated logical/process/deployment views.</p>
