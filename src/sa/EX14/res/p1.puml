@@ -1,0 +1,29 @@
+@startuml
+participant "Client" as C
+participant "Service" as S
+participant "Load Balancer" as L
+participant "Directory" as D
+participant "Service Node 1" as N1
+participant "Service Node 2" as N2
+
+N1 -> D: register
+N2 -> D: register
+L -> N1: monitor availability
+L -> N2: monitor availability
+N1 -> L: response
+C -> S: request
+S -> L: request
+L -> D: ask for available nodes
+D -> L: available nodes addresses
+L -> N1: request to available node
+N1 -> L: response
+L -> S: response
+S -> C: response
+
+
+
+
+
+
+
+@enduml
