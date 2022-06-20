@@ -1,0 +1,52 @@
+@startuml
+participant "Dev" as D
+participant "Dev API" as A
+participant "Collector API" as CA
+participant "Manager" as M
+participant "Transpiler" as T
+participant "Collector directory" as DIR
+
+
+D -> A: add new collector as DSL
+A -> CA: add new collector as DSL
+
+CA -> M: add new collector as DSL
+
+M -> T: transpile collector
+T -> M: transpiled collector
+
+
+M -> DIR : write DSL collector
+M -> DIR : write transpiled collector
+
+M -> CA : added collector
+
+CA -> A: ok
+A -> D: ok
+
+
+
+
+
+
+D -> A:  start collector
+
+
+A -> CA: start collector
+CA -> M: start collector
+
+M -> DIR: read collector
+M -> M: start collector process
+M -> CA: started collector
+
+
+CA -> A: ok
+A -> D: ok
+
+
+
+
+
+
+
+@enduml

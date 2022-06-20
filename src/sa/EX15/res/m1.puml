@@ -1,0 +1,126 @@
+@startuml
+!include <C4/C4_Container>
+!include <C4/C4_Context>
+!include <C4/C4_Component>
+
+
+
+System_Boundary(boundary1, "user device"){
+Container(mobileApp, "mobile app", "") {
+  }
+
+}
+
+System_Boundary(boundary2, "User DB server"){
+
+Container(userDb, "User Database container", "", ""){
+}
+}
+
+
+System_Boundary(boundary3, "Info DB server"){
+
+Container(info, "Info Provider", "", ""){
+
+}
+}
+
+
+
+
+
+
+System_Boundary(boundary4, "API server", "", ""){
+Container(api, "Skip API", "") {
+  }
+
+}
+
+
+
+
+System_Boundary(boundary5, "Aggregator API server", "", ""){
+
+Container(aggregator, "aggregator API", "") {
+
+}
+}
+
+
+
+
+
+
+System_Boundary(boundary6, "Collector server", "Docker", ""){
+    Component(collectors, "collector API"){
+
+}
+
+}
+
+
+
+
+System_Boundary(boundary8, "External server 1"){
+Container(EAPI1, "external API 1") {
+  }
+
+}
+
+
+System_Boundary(boundary9, "External server N"){
+
+Container(EAPIN, "external API N")
+}
+
+
+System_Boundary(boundary10, "Dev API server"){
+
+Container(DAPI, "Dev API")
+}
+
+
+System_Boundary(boundary11, "dev device"){
+Container(browser, "dev api FE", "") {
+  }
+}
+
+
+
+System_Boundary(boundary12, "watchdog server 1"){
+Container(watchdog1, "watchdog 1", "") {
+  }
+}
+
+System_Boundary(boundary13, "watchdog server 2"){
+Container(watchdog2, "watchdog 2", "") {
+  }
+}
+
+interface "services and APIs of the system (less arrows in uml)" as SRVS
+
+
+Rel(collectors, info, "web")
+Rel(collectors, EAPI1, "web")
+Rel(collectors, EAPIN, "web")
+
+Rel(aggregator, info, "web")
+
+
+Rel(api, info, "web")
+
+Rel(watchdog1, watchdog2, "RPC")
+Rel(watchdog2, watchdog1, "RPC")
+Rel(watchdog2, DAPI, "RPC")
+Rel(watchdog1, DAPI, "RPC")
+Rel(watchdog1, SRVS, "")
+Rel(watchdog2, SRVS, "")
+Rel(DAPI, SRVS, "")
+
+
+Rel(api, userDb, "RPC")
+Rel(browser, DAPI, "web")
+
+
+Rel(mobileApp, api, "web")
+@enduml
