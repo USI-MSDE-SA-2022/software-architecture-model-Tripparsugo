@@ -1,0 +1,129 @@
+@startuml
+skinparam componentStyle rectangle
+
+!include <tupadr3/font-awesome/database>
+
+title Logical View
+
+
+component "Mobile App" as APP {
+
+component "User Interface (React Native)" as UI
+component "Redux Store (Redux + Thunk)" as RES
+component "Redux Actions" as REA
+
+
+
+component "LS Service (Realm)" as MSRV
+
+
+component "Local Storage" as LS
+
+UI -> REA
+REA --> RES
+REA -> MSRV
+MSRV -> LS
+}
+
+
+
+component "Skip API service" as SA  {
+
+component "Load Balancer" as LB1
+component "Directory" as DIR1
+
+
+
+
+
+component "Skip API (Kotlin + Spring framework)" as SA_{
+component "Controller" as CTRL
+component "Service" as SRV
+
+
+
+component "User Repositories" as UREP
+component "Cache db (Redis)" as CDB
+CTRL -> SRV
+SRV --> CDB
+SRV -> UREP
+LB1 -> SA_
+LB1 -> DIR1
+}
+
+
+
+}
+
+
+
+
+
+
+component "Data Aggregator" as AGG{
+
+}
+
+
+component "Data Collectors" as COL{
+component "Snow Conditions Collector" as SNA
+
+component "Weather Collector" as WA
+
+component "Resort Info Collector" as RA
+
+component "Geo Collector" as GA
+}
+
+
+
+
+
+component "Info storage service" as IDB{
+component "Info db (elasticsearch)"  as IDB_
+component "Load Balancer" as LB2
+component "Directory" as DIR2
+
+LB2->IDB_
+LB2->DIR2
+}
+
+
+component "User storage service" as UDB{
+component "User db (mySQL cluster)" as UDB_
+component "Load Balancer" as LB3
+component "Directory" as DIR3
+
+LB3 -> UDB_
+LB3 -> DIR3
+
+}
+
+
+
+component "External API" as EA{
+component "weatherski" as AP1
+
+component "skiapi" as AP2
+
+component "onthesnow" as AP3
+
+}
+
+
+MSRV --> SA
+SRV --> IDB
+UREP -> UDB
+
+
+COL --> EA
+COL --> IDB
+AGG --> IDB
+
+
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+@enduml

@@ -1,0 +1,28 @@
+## Example Scenario 1
+
+Quality: _Affordability_ , _Portability_ , _Deployability_
+
+Scenario: The code written for the application is compatible with both Android
+and IoS  with none or relatively trivial changes costing little effort,
+time and money to be deployed on both OS at the same time once the code is written.
+
+```puml
+@startuml
+
+skinparam componentStyle rectangle
+skinparam monochrome true
+skinparam shadowing false
+
+rectangle "When the code has been written during deployment" {
+
+rectangle "Admin" as Source
+rectangle "no/little effort,time and money" as Measure
+
+Source -> [App] : "deploy"
+
+[App] -> [Measure] : "deployed"
+
+}
+
+@enduml
+```

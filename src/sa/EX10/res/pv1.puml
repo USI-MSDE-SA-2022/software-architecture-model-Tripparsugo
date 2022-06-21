@@ -1,0 +1,5 @@
+@startuml
+
+component "NOOOOOOOOOOOOPE" as S1
+
+@enduml

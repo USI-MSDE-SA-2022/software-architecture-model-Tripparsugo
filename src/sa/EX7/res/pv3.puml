@@ -1,0 +1,29 @@
+```puml
+@startuml
+title PV: review when no connection
+
+participant "User Interface" as P1
+participant "Skip App" as P2
+participant "Skip API" as P3
+participant "Local DB" as P4
+
+
+P1 -> P2: add review snow condition
+P2 -> P4: No connection store review
+P2 -> P4: get pending reviews
+P4 -> P2: Pending review
+P2 -> P3: POST review snow condition
+
+
+
+
+
+
+
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+@enduml
+```

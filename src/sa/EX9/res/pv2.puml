@@ -1,0 +1,58 @@
+@startuml
+title PV: Computing overview
+
+participant "Service" as P1
+participant "Data Aggregator" as P2
+participant "Snow Condition Collector" as P3
+participant "Weather Collector" as P4
+participant "Resort Info Collector" as P5
+participant "Geo Info Collector" as P6
+participant "onthesnow.com" as P7
+participant "openweathermap.org" as P8
+participant "rapidapi.com/ski-resorts-and-conditions" as P9
+participant "info DB" as P10
+participant "cache repositories" as P11
+
+
+
+P1 -> P2: getHeatMapOverviewData()
+P2 -> P11: cacheRepositories.HeatMap.search(nKm)
+P11 -> P1: data
+
+P2 -> P3: getGlobalWeatherConditions()
+P3 -> P11: cacheRepositories.Weather.search(nKm)
+P11 -> P3: data
+P3 -> P8: fetch(openWeatherUrl)
+P8 -> P3: data
+P8 -> P11: add data to cache
+P3 -> P2: formatted data
+
+P2 -> P4: getGlobalSnowConditions()
+P4 -> P11: cacheRepositories.SnowConditions.search(nKm)
+P11 -> P4: data
+P4 -> P7: fetch(onTheSnow)
+P7 -> P4: data
+P4 -> P9: fetch(skiCondionUrl)
+P9 -> P4: data
+P4 -> P10: fetch(elasticSearchUrl, {body: esQuery})
+P4 -> P11: add data to cache
+P10 -> P4: data
+P4 -> P2: formatted data
+
+
+P2 -> P5: getGlobalResortList()
+P5 -> P11: cacheRepositories.ResortList.get()
+P11 -> P5: data
+P4 -> P11: add data to cache
+P5 -> P2: formatted data
+
+P2 -> P1: overView Data for heatmap
+
+
+
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+@enduml

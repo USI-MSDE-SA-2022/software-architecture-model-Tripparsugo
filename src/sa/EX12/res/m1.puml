@@ -1,0 +1,79 @@
+@startuml
+!include <C4/C4_Container>
+!include <C4/C4_Context>
+!include <C4/C4_Component>
+
+Person(user, "app user", "")
+
+System_Boundary(boundary, "skip"){
+
+
+
+Container(userDb, "User Database container", "MySQL", ""){
+Component(db1, "User Database container", "MySQL", "Contains data about the users")
+}
+
+
+Container(info, "Info Provider", "Docker", ""){
+Component(db2, "Info Database", "Elasticsearch", "Contains data about the resorts")
+Component(rp1, "Reverse proxy", "Kotlin", "if possible uses cache for expensive operations")
+Component(cache1, "cache db", "Kotlin", "caches reusults of expensive operations")
+
+}
+
+
+
+
+Container(api, "Skip API", "Docker") {
+    Component(controller, "controller", "MVC: controller", "Kotlin")
+    Component(service, "service", "MVC: model", "Kotlin" )
+  }
+
+
+
+Container(aggregator, "aggregator container", "Docker") {
+    Component(aggregatorComp, "aggregator component", "Python", "aggregates content for the service")
+  }
+
+
+
+Container(collector, "collector container", "Docker") {
+    Component(collectorComp1, "collector 1", "Python", "collects data from sources")
+    Component(collectorComp2, "collector 2", "Python", "collects data from sources")
+    Component(collectorCompN, "collector N", "Python", "collects data from sources")
+  }
+
+
+Container(mobileApp, "mobile app", "External Device") {
+    Component(UI, "UI", "JS", "")
+  }
+
+Container(EAPI1, "external API 1", "external device", "info soruce 1") {
+    Component(UI, "UI", "JS", "")
+  }
+
+Container(EAPIN, "external API N", "external device", "info source N") {
+    Component(UI, "UI", "JS", "")
+  }
+
+
+Rel(user, mobileApp, "uses to watch resort info")
+
+Rel(collector, info, "ingests to")
+Rel(collector, EAPI1, "fetches data from")
+Rel(collector, EAPIN, "fetches data from")
+
+Rel(aggregator, info, "fetches data from and posts aggregate to")
+
+
+Rel(api, info, "fetches aggregated info from")
+Rel(api, userDb, "fetches from and posts user data to")
+
+Rel(mobileApp, api, "exchanges data with, certifies credentials from")
+
+
+
+
+
+}
+@enduml

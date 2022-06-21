@@ -1,0 +1,80 @@
+## ADR #1
+
+1. What did you decide?
+
+Which platform should Skip run on.
+
+2. What was the context for your decision?
+
+We want to guarantee Skip users a good compromise of usability and utility at a
+reasonable development cost.
+
+The application should be as immediate as possible to access and push users to
+give updates on the conditions of the slopes.
+
+Another important factor to keep in mind is the 'effort' that would be required
+from the users part to start using the application for instance using a web app
+doesn't require any installations.
+
+This is a key decision that affects the marketing and design architecture of
+the whole software:
+
+
+* From a coding perspective programming languages available across platforms
+are not the same. We also need to keep in mind that available computing power
+vastly differs platform to platform
+
+* Best UI practices vastly differs on different platforms for instance a phone
+has a smaller screen size and ratio compared to a desktop PC
+
+* There are revenue consequences based on these decisions, for instance mobile
+app stores will take a portion of our profits but at the same time offer a more
+ample access to the marketing
+
+
+
+
+3. What is the problem you are trying to solve?
+
+What's the best way for users to access our service?
+
+4.  Which alternative options did you consider?
+
+* Web app
+* Mobile app
+* Desktop
+* Mobile + Desktop
+
+5. Which one did you choose?
+
+Mobile
+
+6. What is the main reason for that?
+
+Users need an interface to quickly access the applicable features and give updates
+on the condition of the snow while on the slopes. Given most users will go skiing
+with their smartphones rather than their computers we need to make the app available
+on them. We can do so either via web app or mobile application, web apps tend to
+be hard to use while on the snow so we need at least mobile app.
+
+The application doesn't feature complex user interactions that would justify
+the need of a desktop version. We also need to consider that a user from a Desktop
+might use the app to evaluate the condition of the slopes but likely won't come
+back home to open it again to provide feedback on their conditions which is something
+our application needs.
+
+PROS:
+
+* not developing also a Desktop app saves component
+* the app store gives a large market access on the fly
+* the application will be easily accessible while skiing
+* it's easier to have a good design on a mobile app rather than a web apps
+
+
+CONS:
+
+* revenue cut by app stores
+* users without a smartphone won't be able to access the application
+* more effort required from the users part to start using the application compared
+to a web app
+* more expensive to develop a web app compared to a mobile one

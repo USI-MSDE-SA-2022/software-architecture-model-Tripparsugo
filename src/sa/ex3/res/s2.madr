@@ -1,0 +1,30 @@
+## Example Scenario 2
+
+Quality: _Interoperability_ , _Usability_
+
+Scenario: The software should be able to fetch data from multiple weather APIs
+in order to provide users with reliable data over a vast amount of locations.
+The fetching and elaboration of this data to a usable summary should be done
+server side for efficiency and speed.
+ Our server should act as an adaptor over the whole data for the application.
+
+```puml
+@startuml
+
+skinparam componentStyle rectangle
+skinparam monochrome true
+skinparam shadowing false
+
+rectangle "When the user needs info on the slopes from the app" {
+
+rectangle "User" as Source
+rectangle "the info is summarised from multiple sources and updated " as Measure
+
+Source -> [App] : "request data"
+
+[App] -> [Measure] : "App provides updated info"
+
+}
+
+@enduml
+```

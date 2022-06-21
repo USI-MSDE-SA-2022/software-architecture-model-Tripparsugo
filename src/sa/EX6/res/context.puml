@@ -1,0 +1,20 @@
+@startuml
+!include <C4/C4_Container>
+
+Person(user_s, "Skiing", "")
+Person(user_p, "Planning to ski", "")
+
+System_Boundary(boundary, "Skip App") {
+
+System_Boundary(fe, "Frontend")
+System_Boundary(be, "Backend ")
+}
+
+System_Ext(wApi, "Weather API")
+System_Ext(resApi, "Resort API")
+
+Rel(user_s, fe, "Reviews resort snow conditions")
+Rel(user_p, fe, "Reads resorts snow conditions + weather + affluency + info")
+Rel(be, wApi, "Fetch", "Weather conditions")
+Rel(be, resApi, "Fetch", "Resort info")
+@enduml

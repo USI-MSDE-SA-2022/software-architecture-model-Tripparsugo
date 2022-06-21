@@ -1,0 +1,62 @@
+## ADR #1
+
+1. What did you decide?
+
+What language and framework should the app use for the backend?
+
+2. What was the context for your decision?
+
+
+
+The choice of  language that can scale well to write medium to large sized applications
+and a well maintaned and usable framework will make the application more
+maintainable, increase reliability (less bugs) and likely reduce our time to market
+so it's a key decision.
+
+
+3. What is the problem you are trying to solve?
+
+Writing programs is hard with the wrong technology so we want to pick the proper one.
+
+
+4.  Which alternative options did you consider?
+
+* Java + Spring
+* Kotlin + Spring
+* Kotlin + Ktor
+* JS + Express
+
+5. Which one did you choose?
+
+Kotlin + Spring
+
+6. What is the main reason for that?
+
+JS is very bug prone and while being a very quick solution for small scale applications
+it doesn't scale well beyond that.
+
+Java has consinstently proven itself to be a good language to develop sstable
+backend and Spring is also a well tested framework in that regard.
+
+While certainly being a solid language Java starts to show signs of its age and
+due to retrocompatibility concerns it never solved some of its core issues (ex: null management)
+
+Kotlin offers a more modern approach to OOP and is completely Interoperable with Java so
+the transition to it shouldn't be traumatic for most programmers.
+
+Ktor is a more modern framework but on the other hand it doesn't have the same amount
+of material on it as we can find about Spring nor it's as easy to find people with
+knowledge about it.
+
+PROS:
+
+* Kotlin is a statically typed language which will reduce the potential for bugs compared to JS
+* Kotlin solves key issues of Java such as excessive verbosity and null management
+* Spring is a well tested framework with lots of material on its usage
+
+
+CONS:
+
+* Developing a backend in Kotlin might be slower than JS
+* Ktor is a more modern and less verbose framework
+* Some programmers might initially be confused about some Kotlin features

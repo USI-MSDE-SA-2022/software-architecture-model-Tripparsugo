@@ -1,0 +1,29 @@
+## Example Scenario 4
+
+Quality: ? maybe it's functional ?
+
+Scenario: The application should be able to store a snow update in case of
+poor connection (as often is on the slopes) for at least a few hours and send
+the data later to our server without having the user compile another snow update.
+
+
+```puml
+@startuml
+
+skinparam componentStyle rectangle
+skinparam monochrome true
+skinparam shadowing false
+
+rectangle "When the user completes a snow update in poor connection conditions" {
+
+rectangle "User" as Source
+rectangle "for a few hours" as Measure
+
+Source -> [App] : "completes snow update"
+
+[App] -> [Measure] : "snow update is stored until ready to be sent"
+
+}
+
+@enduml
+```

@@ -1,0 +1,50 @@
+## ADR #1
+
+1. What did you decide?
+
+What patterns we should use to scale our application to accomodate a larger
+number of users
+
+2. What was the context for your decision?
+
+We want our system to accomodate a larger number of clients but
+it's not always possible simply pick a more powerful machine (scaling up).
+Often doubling our resources in this manner does not double the throughtput of
+our service which is way modern architerctures usually need to be able to
+scale out to multiple machines.
+
+
+3. What is the problem you are trying to solve?
+
+We don't want the application to fail to perform due to a large number of
+concurrent requests from our users.
+
+4.  Which alternative options did you consider?
+
+* Sharding
+* Load balancing
+* Master/worker
+
+
+5. Which one did you choose?
+
+Load Balancing + Sharding
+
+6. What is the main reason for that?
+
+Master/worker pattern does not apply to our case as we don't have issues scaling
+our input nor would we have any straightfoward way  to split our input.
+
+We are explicitly using load balancers to redirect requests to one of the available
+nodes implementing our stateless API.
+
+Sharding is the natural solution to scale out databases and most implementations
+also comes with internal load balancing between the nodes.
+
+In the vast majority of cases solutions like MySQL cluster and elasticsearch will
+ be able to support a very large number of requests with their own load balancer.
+ That being said the node elected as load balancer by the db might still be
+ insufficient so and unable to further scale up to forward the requests which is way
+ we have added our own load balancer. An example for this type of solution
+ is configuring [ES to run using an external load balancer like
+ Azure Resource Manager](https://www.elastic.co/guide/en/elastic-stack-deploy/current/azure-arm-template-load-balancing.html)

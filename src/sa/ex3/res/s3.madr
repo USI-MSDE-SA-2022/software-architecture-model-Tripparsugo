@@ -1,0 +1,27 @@
+## Example Scenario 3
+
+Quality: _Usability_ , _Performance_
+
+Scenario: The survey the user completes to provide the us with updates on
+snow conditions should on average take less than 30s to complete.
+
+```puml
+@startuml
+
+skinparam componentStyle rectangle
+skinparam monochrome true
+skinparam shadowing false
+
+rectangle "When the user provides an update on the snow conditions" {
+
+rectangle "User" as Source
+rectangle "less than 30s " as Measure
+
+Source -> [Snow update] : "compiles"
+
+[Snow update] -> [Measure] : "is completed"
+
+}
+
+@enduml
+```

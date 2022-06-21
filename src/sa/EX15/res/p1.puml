@@ -1,0 +1,18 @@
+participant "Dev" as D
+participant "Dev API" as A
+participant "Storage" as SR
+participant "Monitor" as M
+participant "Service 1" as S1
+
+M -> M : timeout
+M -> S1 : send request
+S1 -> M : response
+M -> SR: store response time
+D -> A : get uptime of service 1
+A -> S : query data of component 1
+S -> A : data of component 1
+A -> D : uptime of component 1
+
+
+
+@enduml

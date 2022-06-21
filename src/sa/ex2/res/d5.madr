@@ -1,0 +1,56 @@
+## ADR #5
+
+1. What did you decide?
+
+How to incentivise users to give snow updates
+
+2. What was the context for your decision?
+
+We want users to provide as much updates on the condition of the snow as possible
+to offer consistent and up to date reports.
+
+We can't make the feedback too long or invasive or users won't compile it.
+
+The incentives can't heavily impact the profits of our application.
+
+This is a marketing decision with a minor impact on the code of the application
+albeit way to give incentives will have to be implemented.
+
+3. What is the problem you are trying to solve?
+
+Users might not provide updates if they don't feel they gain something from it.
+At the same time an incentive perceived as too large might prompt them to
+leave fake updates
+
+4.  Which alternative options did you consider?
+
+* no incentives
+* small payment
+* lottery
+
+5. Which one did you choose?
+
+lottery
+
+6. What is the main reason for that?
+
+By providing no incentives it would be up to the user's goodwill to leave updates
+which might still happen (reviews exist even if no one gets paid for them).
+
+We could issue small payment to users for their updates but these payments would
+be so small in order to still manage to make a profit off the app that users might
+perceive them as a 'job' they are not getting paid enough to do.
+
+A lottery of ski related items might be the best options since it doesn't cost
+much compared to the perceived value from the user's part and might also introduce
+the fun factor.
+
+PROS:
+* incentive for the users
+
+CONS:
+
+* lotteries have to abide legal regulations
+* lottery still impacts operating costs albeit in a minor way
+* it might incentivise users to leave fake updates. A countermeasure needs to be
+designed.

@@ -1,0 +1,81 @@
+@startuml
+title PV: Computing overview
+
+participant "Service" as P1
+participant "Data Aggregator" as P2
+participant "Snow Condition Collector" as P3
+participant "Weather Collector" as P4
+participant "Resort Info Collector" as P5
+participant "Geo Info Collector" as P6
+participant "onthesnow.com" as P7
+participant "openweathermap.org" as P8
+participant "rapidapi.com/ski-resorts-and-conditions" as P9
+participant "geo data source" as P10
+participant "info DB" as P11
+participant "cache repositories" as P12
+
+
+
+
+
+P2 -> P2 : set update timer
+
+
+P3 -> P3 : set update timer
+
+P4 -> P4 : set update timer
+P5 -> P5 : set update timer
+
+P6 -> P6 : set update timer
+
+
+
+P3 -> P3 : update timer expires
+P3 -> P8: GET rapidapi.com/ski-resorts-and-conditions
+P8 -> P3: data
+P3 -> P7: GET onthesnow.com
+P7 -> P3: data
+P3 -> P11: PUT  processed data
+
+P4 -> P4 : update timer expires
+P4 -> P11: GET elasticURL/resortIndex/_search
+P11 -> P4: data
+P4 -> P7: GET openweathermap.org (for the resort areas)
+P7 -> P4: data
+P4 -> P11: PUT  processed data
+
+
+P5 -> P5 : update timer expires
+P5 -> P8: GET rapidapi.com/ski-resorts-and-conditions
+P8 -> P5: data
+P5 -> P11: PUT  processed data
+
+
+
+P2 -> P2 : update timer expires
+P2 -> P11: GET elasticURL/resortIndex/_search
+P2 -> P11: GET elasticURL/geoIndex/_search
+P2 -> P11: GET elasticURL/weatherIndex/_search
+P2 -> P11: GET elasticURL/snowIndex/_search
+P2 -> P2: aggreagate and process data
+P2 -> P12: set data "GBL_ALL"
+P2 -> P12: set data "..."
+P2 -> P12: set data "RESORT_<resortId>"
+
+
+
+
+P6 -> P6 : update timer expires
+P6 -> P10: query geo info
+P10 -> P6: data
+P6 -> P11: PUT  processed data
+
+P1 -> P2: getHeatMapOverview()
+P2 -> P12: get data "GBL_ALL"
+P2 -> P1: data
+
+P1 -> P2: getResortInfo(resortId)
+P2 -> P12: get data "RESORT_<resortId>"
+P2 -> P1: data
+
+@enduml

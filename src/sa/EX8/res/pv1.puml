@@ -1,0 +1,25 @@
+@startuml
+title PV: requesting resort info
+
+participant "User Interface" as P1
+participant "Redux Actions" as P2
+participant "Redux Store" as P3
+participant "Skip API" as P4
+
+
+
+P1 -> P2: dispatchShowResort(dispatch, resortId)
+P2 -> P3: dispatch("FETCHING_RESORT_INFO")
+P1 -> P1: refresh
+P2 -> P4: fetch(apiURL)
+P4 -> P2: return resort info
+P2 -> P3: dispatch("FETCHED_RESORT_INFO_SUCCESS", resortInfo)
+P1 -> P1: refresh
+P2 -> P3: dispatch("SHOW_RESORT_INFO", resortId)
+P1 -> P1: refresh
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+@enduml

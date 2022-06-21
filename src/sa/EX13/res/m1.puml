@@ -1,0 +1,62 @@
+
+@startuml
+component Mobile_App as APP {
+   }
+   component "reverse proxy" as PX
+
+   component "Skip API" as API
+   APP --> API : web
+
+
+   component "Service" as SERV1
+   API -> SERV1: call
+
+
+   component "User DB (mySql)" as DB1
+   SERV1 -> DB1 : rpc
+
+   component "Info db (elasticsearch)" as DB2
+   SERV1 --> PX : web
+
+   component "cache db (reddis)" as DB3
+
+
+
+   DB3 <- PX : call
+   PX -> DB2 : web
+
+   component "Data aggregator" as DT
+
+
+
+
+
+
+
+component "Data aggregator" as DT
+
+component "Data collectors" as DC{
+
+}
+
+component "External APIs" as APIS
+
+component "watchdogs" as WS {
+component "watchdog 1" as W1
+component "watchdog 2" as W2
+
+}
+
+W1 -> W2: rpc
+W2 -> W1: rpc
+
+DC -> APIS: web
+DC --> PX : web
+DT --> PX : web
+
+
+
+
+WS -> API : web
+WS --> PX : web
+@enduml

@@ -1,0 +1,31 @@
+## Example Scenario 7
+
+Quality: _Visibility_ , _Maintainability_ , _Privacy_
+
+Scenario: When the service of the App is not available the application should
+show the user a clear message stating the reason. If the reason is a fault in
+the software a log should be sent to the developer not containing sensible user
+data.
+
+
+
+```puml
+@startuml
+
+skinparam componentStyle rectangle
+skinparam monochrome true
+skinparam shadowing false
+
+rectangle "When the application cant service the user" {
+
+rectangle "User" as Source
+rectangle "logs are private" as Measure
+
+Source -> [App] : "operates"
+
+[App] -> [Measure] : "shows cause of unavailability (ex: no connection). If error sends logs"
+
+}
+
+@enduml
+```

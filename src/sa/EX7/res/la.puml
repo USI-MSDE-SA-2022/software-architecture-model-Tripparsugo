@@ -1,0 +1,92 @@
+@startuml
+skinparam componentStyle rectangle
+
+!include <tupadr3/font-awesome/database>
+
+title Logical View
+
+
+
+component "User Interface" as UI
+interface " " as UI_
+UI - UI_
+
+component Mobile_App as APP
+
+
+component "Local Storage" as LS
+interface " " as LS_
+LS - LS_
+
+component "Skip API" as SA
+interface " " as SA_
+SA - SA_
+
+
+component "Service" as SRV
+interface " " as SRV_
+SRV - SRV_
+
+
+component "Info db (elasticsearch)" as IDB
+interface " " as IDB_
+IDB - IDB_
+
+component "User db (mySQL)" as UDB
+interface " " as UDB_
+UDB - UDB_
+
+
+component "Cache db (Redis)" as CDB
+interface " " as CDB_
+CDB - CDB_
+
+component "Data Aggregator" as AGG{
+component "Snow Conditions Agg" as SNA
+
+component "Weather Agg" as WA
+
+component "Resort Agg" as RA
+
+component "Geo Agg" as GA
+}
+interface " " as AGG_
+AGG - AGG_
+
+
+component "External API" as EA{
+component "weatherski" as AP1
+
+component "skiapi" as AP2
+
+component "onthesnow" as AP3
+
+}
+interface " " as EA_
+EA_ -- EA
+
+
+
+
+
+UI_ )- APP
+LS_ )-- APP
+SA_ )-- APP
+SRV_ )-- SA
+UDB_ )- SRV
+IDB_ )-- SRV
+AGG_ )-- SRV
+CDB_ )--AGG
+IDB_ )- AGG
+EA_ )-- AGG
+
+
+
+
+
+
+
+skinparam monochrome true
+skinparam shadowing false
+skinparam defaultFontName Courier
+@enduml

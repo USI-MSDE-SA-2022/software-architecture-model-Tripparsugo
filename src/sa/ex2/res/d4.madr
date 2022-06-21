@@ -1,0 +1,63 @@
+## ADR #4
+
+1. What did you decide?
+
+How we should gain money from the application
+
+2. What was the context for your decision?
+
+We need to make a profit from our application.
+
+We need to consider that certain solution will impact the amount of users of the
+application (ex: making the app paid) or impact the usability (ex: aggressive ads)
+
+This decision is a marketing one but might slightly impact UI design and code if
+we want to add ads to the application. For donations we will need to implement
+a secure way to send them code-wise.
+
+
+3. What is the problem you are trying to solve?
+
+How can we profit from the application?
+
+4.  Which alternative options did you consider?
+
+* paid application
+* free application with ads
+* free application with donations
+
+5. Which one did you choose?
+
+free application with ads
+
+6. What is the main reason for that?
+
+An application can only be paid if it offers a service indispensable for the
+user while at the same time being by far the best
+product available on the market (ex: photoshop).
+Users will be very shy to download a paid app on the a mobile store in part given
+the fierce competition on it.
+That being said making the app paid would surely reduce the amount of users
+in turn reducing the amount of snow updates we get from them.
+
+At the cost of some usability ads can provide a steady flow of revenue without
+the big barrier on the download an initial payment would be. We could also
+consider the option to remove ads with a payment.
+
+Donations don't impact the usability of the app but likely don't provide enough
+revenue. More research would be needed on this topic to confirm it as there seem
+to be conflicting opinions on the topic.
+
+
+
+
+
+PROS:
+
+* steady flow of revenue
+* no download barrier
+
+CONS:
+
+* usability tradeoff
+* need to change UI to fit ads
